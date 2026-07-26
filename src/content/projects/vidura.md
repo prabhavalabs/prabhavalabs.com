@@ -6,8 +6,8 @@ tags: ['TypeScript', 'PWA', 'LLM', 'Self-hosted']
 repo: 'https://github.com/prabhavalabs/vidura'
 link: 'https://vidura.prabhavalabs.com'
 status: 'active'
-featured: true
-order: 1
+featured: false
+order: 2
 image: '/images/projects/vidura.jpg'
 ---
 

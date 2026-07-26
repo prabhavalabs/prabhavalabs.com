@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 720" role="img" aria-labelledby="title desc">
+  <title id="title">Salli SMS processing pipeline</title>
+  <desc id="desc">A transaction SMS passes through sender and safety checks, known templates, a local classifier fallback, deterministic evidence extraction, and a user review before reaching the encrypted ledger.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07110e"/>
+      <stop offset="1" stop-color="#090b13"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a87826"/>
+      <stop offset="1" stop-color="#e2b54a"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1600" height="720" rx="42" fill="url(#bg)"/>
+  <g fill="none" stroke="#d8aa3e" stroke-opacity=".34" stroke-width="3">
+    <path d="M240 360H360"/>
+    <path d="M565 360H685"/>
+    <path d="M890 360H1010"/>
+    <path d="M1215 360H1335"/>
+  </g>
+  <g font-family="system-ui, sans-serif">
+    <g transform="translate(70 226)">
+      <rect width="170" height="268" rx="30" fill="#121c21" stroke="#2c3942"/>
+      <rect x="28" y="45" width="114" height="63" rx="18" fill="#f5f0e4"/>
+      <path d="M48 65h58M48 82h75" stroke="#005b46" stroke-width="7" stroke-linecap="round"/>
+      <rect x="28" y="130" width="114" height="63" rx="18" fill="#005b46"/>
+      <path d="M48 151h66M48 168h42" stroke="#f5f0e4" stroke-width="7" stroke-linecap="round"/>
+      <text x="85" y="235" text-anchor="middle" fill="#f5f0e4" font-size="22" font-weight="650">Incoming SMS</text>
+    </g>
+    <g transform="translate(360 226)">
+      <rect width="205" height="268" rx="30" fill="#101923" stroke="#263443"/>
+      <circle cx="102" cy="72" r="35" fill="#18291f" stroke="#35c69a" stroke-width="3"/>
+      <path d="M85 72l12 12 25-28" fill="none" stroke="#35c69a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="102" y="145" text-anchor="middle" fill="#f5f0e4" font-size="22" font-weight="650">Safety gate</text>
+      <text x="102" y="180" text-anchor="middle" fill="#a9b5c8" font-size="17">sender, OTP, promo,</text>
+      <text x="102" y="205" text-anchor="middle" fill="#a9b5c8" font-size="17">failed and pending</text>
+    </g>
+    <g transform="translate(685 146)">
+      <rect width="205" height="174" rx="30" fill="#101923" stroke="#263443"/>
+      <text x="102" y="62" text-anchor="middle" fill="#e2b54a" font-size="22" font-weight="650">Known template</text>
+      <text x="102" y="99" text-anchor="middle" fill="#a9b5c8" font-size="17">high precision rule</text>
+      <text x="102" y="128" text-anchor="middle" fill="#a9b5c8" font-size="17">matches first</text>
+      <rect x="62" y="145" width="80" height="4" rx="2" fill="url(#gold)"/>
+    </g>
+    <g transform="translate(685 400)">
+      <rect width="205" height="174" rx="30" fill="#101923" stroke="#263443"/>
+      <text x="102" y="62" text-anchor="middle" fill="#e2b54a" font-size="22" font-weight="650">Local classifier</text>
+      <text x="102" y="99" text-anchor="middle" fill="#a9b5c8" font-size="17">fallback for unfamiliar</text>
+      <text x="102" y="128" text-anchor="middle" fill="#a9b5c8" font-size="17">wording</text>
+      <circle cx="102" cy="149" r="7" fill="#d8aa3e" filter="url(#glow)"/>
+    </g>
+    <path d="M625 360h26c23 0 34-17 34-39v-62" fill="none" stroke="#d8aa3e" stroke-opacity=".5" stroke-width="3"/>
+    <path d="M625 360h26c23 0 34 17 34 39v62" fill="none" stroke="#d8aa3e" stroke-opacity=".5" stroke-width="3"/>
+    <path d="M890 233h48c46 0 52 43 72 127" fill="none" stroke="#d8aa3e" stroke-opacity=".5" stroke-width="3"/>
+    <path d="M890 487h48c46 0 52-43 72-127" fill="none" stroke="#d8aa3e" stroke-opacity=".5" stroke-width="3"/>
+    <g transform="translate(1010 226)">
+      <rect width="205" height="268" rx="30" fill="#101923" stroke="#263443"/>
+      <g fill="#d8aa3e">
+        <rect x="43" y="47" width="48" height="16" rx="8"/>
+        <rect x="104" y="47" width="58" height="16" rx="8" opacity=".55"/>
+        <rect x="43" y="80" width="76" height="16" rx="8" opacity=".75"/>
+        <rect x="132" y="80" width="30" height="16" rx="8" opacity=".45"/>
+      </g>
+      <text x="102" y="145" text-anchor="middle" fill="#f5f0e4" font-size="22" font-weight="650">Direct evidence</text>
+      <text x="102" y="180" text-anchor="middle" fill="#a9b5c8" font-size="17">amount, date, account,</text>
+      <text x="102" y="205" text-anchor="middle" fill="#a9b5c8" font-size="17">currency and merchant</text>
+    </g>
+    <g transform="translate(1335 226)">
+      <rect width="195" height="268" rx="30" fill="#1b1710" stroke="#6d5320"/>
+      <circle cx="97" cy="72" r="35" fill="#d8aa3e"/>
+      <path d="M80 72l12 12 25-28" fill="none" stroke="#07110e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="97" y="145" text-anchor="middle" fill="#f5f0e4" font-size="22" font-weight="650">Human review</text>
+      <text x="97" y="180" text-anchor="middle" fill="#bcb39f" font-size="17">confirm or correct</text>
+      <text x="97" y="205" text-anchor="middle" fill="#bcb39f" font-size="17">before the ledger</text>
+    </g>
+  </g>
+</svg>
