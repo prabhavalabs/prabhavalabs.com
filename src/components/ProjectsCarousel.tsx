@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'motion/react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Card, type ProjectCard } from './ProjectsGrid';
@@ -62,9 +62,19 @@ export default function ProjectsCarousel({ projects }: { projects: ProjectCard[]
   const onScroll = useCallback(() => {
     const el = trackRef.current;
     if (!el) return;
-    setAtStart(el.scrollLeft < 24);
-    setAtEnd(el.scrollLeft > el.scrollWidth - el.clientWidth - 24);
+    const tolerance = 2;
+    setAtStart(el.scrollLeft <= tolerance);
+    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - tolerance);
   }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    onScroll();
+    const observer = new ResizeObserver(onScroll);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [onScroll]);
 
   const scrollBy = (dir: 1 | -1) => {
     const el = trackRef.current;
@@ -127,9 +137,11 @@ export default function ProjectsCarousel({ projects }: { projects: ProjectCard[]
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={endDrag}
+          onPointerCancel={endDrag}
           onPointerLeave={endDrag}
           onClickCapture={onClickCapture}
-          className="scrollbar-none flex cursor-grab select-none snap-x snap-mandatory items-stretch gap-6 overflow-x-auto px-6 pb-4 active:cursor-grabbing md:px-[max(1.5rem,calc((100vw-72rem)/2))]"
+          aria-label="Open-source projects"
+          className="scrollbar-none flex cursor-grab select-none snap-x snap-mandatory scroll-pl-6 items-stretch gap-6 overflow-x-auto px-6 pb-4 active:cursor-grabbing md:scroll-pl-[max(1.5rem,calc((100vw-72rem)/2))] md:px-[max(1.5rem,calc((100vw-72rem)/2))]"
         >
           {projects.map((p, i) => (
             <div

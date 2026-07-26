@@ -70,9 +70,48 @@ function json(data, status, extraHeaders = {}) {
   });
 }
 
+export function locationFromRequest(request) {
+  const cf = request.cf ?? {};
+  const latitude = Number(cf.latitude);
+  const longitude = Number(cf.longitude);
+
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    return null;
+  }
+
+  let country = cf.country;
+  try {
+    country =
+      new Intl.DisplayNames(['en'], { type: 'region' }).of(cf.country) ??
+      cf.country;
+  } catch {
+    // Cloudflare can occasionally omit or return an unknown country code.
+  }
+
+  return {
+    success: true,
+    city: cf.city || cf.region || '',
+    country: country || '',
+    latitude,
+    longitude,
+  };
+}
+
+function handleLocation(request) {
+  const location = locationFromRequest(request);
+  return json(
+    location ?? { success: false },
+    200,
+    { 'Cache-Control': 'private, max-age=3600' }
+  );
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === '/api/location' && request.method === 'GET') {
+      return handleLocation(request);
+    }
     if (url.pathname === '/api/subscribe' && request.method === 'POST') {
       return handleSubscribe(request, env);
     }
