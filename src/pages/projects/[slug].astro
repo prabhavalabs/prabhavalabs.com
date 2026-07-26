@@ -20,9 +20,28 @@ const statusStyle: Record<string, string> = {
   incubating: 'text-amber-300/80 border-amber-300/20',
   archived: 'text-white/40 border-white/10',
 };
+
+const projectUrl = new URL(`/projects/${project.id}`, Astro.site);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: d.title,
+  description: d.description,
+  url: d.link ?? projectUrl.href,
+  codeRepository: d.repo,
+  applicationCategory: 'DeveloperApplication',
+  image: d.image ? new URL(d.image, Astro.site).href : undefined,
+  author: { '@id': `${Astro.site?.origin}/#organization` },
+};
 ---
 
-<Layout title={`${d.title} — ප්‍රභව Labs`} description={d.description}>
+<Layout
+  title={`${d.title} — ප්‍රභව Labs`}
+  description={d.description}
+  canonicalPath={`/projects/${project.id}`}
+  image={d.image ?? '/images/og.jpg'}
+  structuredData={structuredData}
+>
   <Navbar client:load currentPath="/projects" />
 
   <header class="relative overflow-hidden px-6 pb-14 pt-44 md:pt-52">
@@ -46,14 +65,14 @@ const statusStyle: Record<string, string> = {
           {d.status}
         </span>
         {d.tags.map((t) => (
-          <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/40">{t}</span>
+          <span class="rounded-full border border-white/15 px-3 py-1 text-xs text-white/60">{t}</span>
         ))}
       </div>
 
       <h1 class="font-serif-display text-5xl leading-[1.05] tracking-tight text-white md:text-7xl">
         {d.title}
       </h1>
-      <p class="mt-4 text-lg text-white/50">{d.tagline}</p>
+      <p class="mt-4 text-lg text-white/65">{d.tagline}</p>
 
       <div class="mt-8 flex flex-wrap gap-4">
         {d.repo && (
@@ -82,6 +101,18 @@ const statusStyle: Record<string, string> = {
 
   <main class="px-6 pb-28">
     <article class="prose-dark mx-auto max-w-3xl border-t border-white/10 pt-12">
+      {
+        d.image && (
+          <img
+            src={d.image}
+            alt={`${d.title} project cover`}
+            width={d.imageWidth}
+            height={d.imageHeight}
+            loading="eager"
+            fetchpriority="high"
+          />
+        )
+      }
       <Content />
     </article>
   </main>

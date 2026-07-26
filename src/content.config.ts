@@ -1,5 +1,6 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
@@ -8,12 +9,14 @@ const projects = defineCollection({
     tagline: z.string(),
     description: z.string(),
     tags: z.array(z.string()).default([]),
-    repo: z.string().url().optional(),
-    link: z.string().url().optional(),
+    repo: z.url().optional(),
+    link: z.url().optional(),
     status: z.enum(['active', 'incubating', 'archived']).default('active'),
     featured: z.boolean().default(false),
     order: z.number().default(99),
     image: z.string().optional(),
+    imageWidth: z.number().int().positive().optional(),
+    imageHeight: z.number().int().positive().optional(),
     video: z.string().optional(),
   }),
 });
@@ -29,6 +32,14 @@ const blog = defineCollection({
     lang: z.enum(['en', 'si']).default('en'),
     // Slug of the same post in the other language, if one exists.
     translationOf: z.string().optional(),
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
+    imageWidth: z.number().int().positive().optional(),
+    imageHeight: z.number().int().positive().optional(),
+    category: z.enum(['engineering', 'guide', 'studio']).default('engineering'),
+    series: z.string().optional(),
+    seriesOrder: z.number().optional(),
+    relatedProject: z.string().optional(),
   }),
 });
 

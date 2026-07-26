@@ -5,11 +5,13 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Starfield from '../../components/Starfield';
 
-// The index lists English posts; Sinhala versions are reached through the
-// language switcher on each post.
-const posts = (
-  await getCollection('blog', ({ data }) => !data.draft && data.lang === 'en')
-).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts
+  .filter(({ data }) => data.lang === 'en')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const translationFor = (id: string, translationOf?: string) =>
+  allPosts.find((post) => post.data.translationOf === id || post.id === translationOf);
 
 const fmt = (date: Date) =>
   date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -28,13 +30,13 @@ const fmt = (date: Date) =>
     >
     </div>
     <div class="relative mx-auto max-w-6xl">
-      <p class="mb-6 text-xs font-medium uppercase tracking-[0.35em] text-white/40">
+      <p class="mb-6 text-xs font-medium uppercase tracking-[0.35em] text-white/65">
         Engineering blog
       </p>
       <h1 class="font-serif-display max-w-3xl text-5xl leading-[1.05] tracking-tight text-white md:text-7xl">
         Notes from <em class="italic text-white/60">the origin.</em>
       </h1>
-      <p class="mt-6 max-w-xl text-sm leading-relaxed text-white/50 md:text-base">
+      <p class="mt-6 max-w-xl text-sm leading-relaxed text-white/65 md:text-base">
         Deep dives, decision logs, and honest write-ups from building open-source software.
       </p>
     </div>
@@ -49,27 +51,46 @@ const fmt = (date: Date) =>
           <ul class="divide-y divide-white/10 border-t border-white/10">
             {posts.map((post) => (
               <li>
-                <a
-                  href={`/blog/${post.id}`}
-                  class="group grid gap-2 py-8 transition-colors md:grid-cols-[10rem_1fr_auto] md:items-baseline md:gap-8"
-                >
-                  <time class="text-sm text-white/35">{fmt(post.data.date)}</time>
+                <article class="group grid gap-2 py-8 transition-colors md:grid-cols-[10rem_1fr_auto] md:items-baseline md:gap-8">
+                  <time class="text-sm text-white/60">{fmt(post.data.date)}</time>
                   <div>
-                    <h2 class="font-serif-display text-2xl tracking-tight text-white/90 transition-colors group-hover:text-white md:text-3xl">
-                      {post.data.title}
+                    <div class="mb-2 flex flex-wrap items-center gap-2">
+                      <span class="text-[11px] font-medium uppercase tracking-[0.2em] text-violet-200/75">
+                        {post.data.category}
+                      </span>
+                      {post.data.series && (
+                        <span class="text-xs text-white/55">{post.data.series}</span>
+                      )}
+                    </div>
+                    <h2>
+                      <a
+                        href={`/blog/${post.id}`}
+                        class="font-serif-display text-2xl tracking-tight text-white/90 transition-colors hover:text-white md:text-3xl"
+                      >
+                        {post.data.title}
+                      </a>
                     </h2>
-                    <p class="mt-2 max-w-2xl text-sm leading-relaxed text-white/45">
+                    <p class="mt-2 max-w-2xl text-sm leading-relaxed text-white/65">
                       {post.data.description}
                     </p>
+                    {translationFor(post.id, post.data.translationOf) && (
+                      <a
+                        href={`/blog/${translationFor(post.id, post.data.translationOf)?.id}`}
+                        class="font-sinhala mt-3 inline-flex text-sm text-violet-200/80 underline-offset-4 hover:text-white hover:underline"
+                        lang="si"
+                      >
+                        සිංහල අනුවාදය
+                      </a>
+                    )}
                   </div>
                   <div class="hidden gap-2 md:flex">
                     {post.data.tags.slice(0, 2).map((t) => (
-                      <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/40">
+                      <span class="rounded-full border border-white/15 px-3 py-1 text-xs text-white/60">
                         {t}
                       </span>
                     ))}
                   </div>
-                </a>
+                </article>
               </li>
             ))}
           </ul>
