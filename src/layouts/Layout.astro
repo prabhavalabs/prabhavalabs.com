@@ -4,43 +4,94 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  lang?: 'en' | 'si';
+  canonicalPath?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  tags?: string[];
+  alternates?: Array<{ lang: 'en' | 'si'; href: string }>;
+  structuredData?: Record<string, unknown>;
 }
 
 const {
   title = 'ප්‍රභව Labs — Where ideas originate',
   description =
     'Prabhava Labs is an independent open-source studio. We build tools, ship them in the open, and tell the stories behind them.',
+  lang = 'en',
+  canonicalPath = Astro.url.pathname,
+  image = '/images/og.jpg',
+  type = 'website',
+  publishedTime,
+  tags = [],
+  alternates = [],
+  structuredData,
 } = Astro.props;
+
+const site = Astro.site ?? new URL('https://prabhavalabs.com');
+const canonicalUrl = new URL(canonicalPath, site);
+const socialImageUrl = new URL(image, site);
+const locale = lang === 'si' ? 'si_LK' : 'en_US';
+const baseStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${site.origin}/#organization`,
+      name: 'Prabhava Labs',
+      url: site.origin,
+      logo: new URL('/brand/prabhava-mark.svg', site).href,
+      sameAs: ['https://github.com/prabhavalabs', 'https://x.com/PravhavaLabs'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site.origin}/#website`,
+      name: 'Prabhava Labs',
+      url: site.origin,
+      inLanguage: lang === 'si' ? 'si-LK' : 'en',
+      publisher: { '@id': `${site.origin}/#organization` },
+    },
+  ],
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang === 'si' ? 'si' : 'en'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {alternates.map((alternate) => (
+      <link
+        rel="alternate"
+        hreflang={alternate.lang === 'si' ? 'si-LK' : 'en'}
+        href={new URL(alternate.href, site)}
+      />
+    ))}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/images/og.jpg" />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={locale} />
+    <meta property="og:site_name" content="Prabhava Labs" />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content={title} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
     <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(baseStructuredData)} />
+    {structuredData && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    )}
   </head>
   <body>
     <slot />
-    <script>
-      import Lenis from 'lenis';
-
-      const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-      // expose for anchor links & debugging
-      (window as any).lenis = lenis;
-      function raf(time: number) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-      requestAnimationFrame(raf);
-    </script>
   </body>
 </html>

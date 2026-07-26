@@ -29,15 +29,15 @@ habit.
 
 ## The interactive scenes
 
-There are no stock photos and no videos here. Every visual is a live three.js
-scene, rendered in your browser, and each one means something:
+There are no stock photos in the main experience. The landing-page scenes are
+live three.js objects rendered in the browser, while project stories can use
+original editorial artwork and real product screenshots.
 
 **The globe.** A dotted world with arcs flying toward Colombo, because that is
-where the work originates. The site looks up your rough location when you
-visit and fires one bright arc from your city to mine, with a small "signal
-received" badge. During testing the first badge greeted me from Saarbrücken,
-Germany, and it still makes me smile that a stranger's visit draws a new line
-on the map. You can grab the globe and spin it.
+where the work originates. The arcs use a fixed set of world cities, so the
+scene does not need a visitor-location lookup. You can grab the globe and spin
+it on a capable desktop. Small screens, reduced-motion preferences, and
+data-saver connections receive a lightweight CSS rendering instead.
 
 <img src=".github/screenshots/particle-wave.png" alt="Featured project card floating over a full-width particle wave" width="820" />
 
@@ -58,11 +58,11 @@ about work made for people. The videos now live in a folder called archive.
 
 ## How it is built
 
-The site is Astro 5 with React islands. Every page is prerendered to static
+The site is Astro 7 with React islands. Every page is prerendered to static
 HTML and served from Cloudflare's edge, so the first paint costs almost
-nothing. Interactivity is opt-in per component: three.js loads only on the
-landing page, only in the browser, while article pages ship no JavaScript at
-all.
+nothing. Interactivity is opt-in per component: three.js is delayed and loads
+only for capable desktop visitors on the landing page. Article pages hydrate a
+small mobile navigation and the newsletter form, but never load WebGL.
 
 Content is plain markdown. Adding a project means dropping one file into
 `src/content/projects/` with a few frontmatter fields; the grid, the detail
@@ -72,13 +72,16 @@ and no database, and for a one-person studio that is a feature.
 
 Styling is Tailwind v4 plus a small liquid-glass system, with Instrument
 Serif for display type and Noto Serif Sinhala so ප්‍රභව renders the way it
-should. Scroll animation comes from Motion, smooth scrolling from Lenis.
+should. Motion handles the small entrance and interaction animations, and
+reduced-motion preferences are respected throughout.
 
 ## Running it locally
 
 ```sh
 npm install
 npm run dev        # http://localhost:4321
+npm run check      # Astro and TypeScript diagnostics
+npm test           # edge API unit tests
 npm run build      # static build to ./dist
 npm run deploy     # build and push to Cloudflare Workers
 ```
@@ -101,6 +104,8 @@ water.
 
 ## Projects
 
-The first resident of the shelf is [Vidura](https://github.com/prabhavalabs/vidura),
-a PWA that overlays LLM-translated Sinhala subtitles on YouTube videos. More
-are on the way; each arrives with its story.
+The featured resident is [Salli](https://github.com/theetaz/salli), a
+privacy-first Android money companion that turns supported Sri Lankan bank SMS
+into an editable local ledger. Its engineering case study and three user guides
+are published alongside the project. [Vidura](https://github.com/prabhavalabs/vidura)
+and the rest of the open-source shelf remain available under Projects.

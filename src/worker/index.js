@@ -1,9 +1,24 @@
 // Edge worker for prabhavalabs.com: serves the static site and a small
-// same-origin API. Currently one endpoint — newsletter subscriptions into D1.
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+// same-origin API for newsletter subscriptions.
+import {
+  checkRateLimit,
+  isAllowedOrigin,
+  isValidEmail,
+  normalizeEmail,
+} from './newsletter.js';
 
 async function handleSubscribe(request, env) {
+  if (!isAllowedOrigin(request.headers.get('Origin'))) {
+    return json({ error: 'This request is not allowed' }, 403);
+  }
+  if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) {
+    return json({ error: 'Expected a JSON request' }, 415);
+  }
+  const contentLength = Number(request.headers.get('Content-Length') ?? 0);
+  if (contentLength > 2048) {
+    return json({ error: 'Request is too large' }, 413);
+  }
+
   let body;
   try {
     body = await request.json();
@@ -13,16 +28,24 @@ async function handleSubscribe(request, env) {
 
   // Honeypot: real users never fill the hidden "website" field.
   if (body.website) return json({ ok: true }, 200);
+  if (body.consent !== true) {
+    return json({ error: 'Please confirm that you want to subscribe' }, 422);
+  }
 
-  const email = String(body.email ?? '')
-    .trim()
-    .toLowerCase()
-    .slice(0, 254);
-  if (!EMAIL_RE.test(email)) {
+  const email = normalizeEmail(body.email);
+  if (!isValidEmail(email)) {
     return json({ error: 'That does not look like an email address' }, 422);
   }
 
   try {
+    const limit = await checkRateLimit(request, env);
+    if (!limit.allowed) {
+      return json(
+        { error: 'Too many attempts. Please try again in a few minutes.' },
+        429,
+        { 'Retry-After': String(limit.retryAfter) }
+      );
+    }
     await env.DB.prepare(
       'INSERT OR IGNORE INTO subscribers (email, created_at, source) VALUES (?1, ?2, ?3)'
     )
@@ -36,10 +59,14 @@ async function handleSubscribe(request, env) {
   return json({ ok: true }, 200);
 }
 
-function json(data, status) {
+function json(data, status, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store',
+      ...extraHeaders,
+    },
   });
 }
 

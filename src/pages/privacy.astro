@@ -1,0 +1,77 @@
+---
+import { ArrowLeft } from 'lucide-react';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import Starfield from '../components/Starfield';
+---
+
+<Layout
+  title="Privacy — ප්‍රභව Labs"
+  description="What prabhavalabs.com collects, why it is collected, and how to remove it."
+  canonicalPath="/privacy"
+>
+  <Navbar client:load currentPath="/privacy" />
+
+  <header class="relative overflow-hidden px-6 pb-12 pt-44 md:pt-52">
+    <Starfield client:load density={70} />
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(124,111,212,0.1)_0%,_transparent_65%)]"
+    >
+    </div>
+    <div class="relative mx-auto max-w-3xl">
+      <a
+        href="/"
+        class="mb-10 inline-flex items-center gap-2 text-sm text-white/65 transition-colors hover:text-white"
+      >
+        <ArrowLeft size={14} /> Back home
+      </a>
+      <p class="mb-5 text-xs font-medium uppercase tracking-[0.35em] text-white/65">Privacy</p>
+      <h1 class="font-serif-display text-5xl leading-[1.05] tracking-tight text-white md:text-7xl">
+        A small site with a <em class="italic text-white/65">small data footprint.</em>
+      </h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-white/65">
+        Prabhava Labs does not run behavioural analytics, advertising trackers, or an account
+        system. I collect one thing only when you choose to share it: your newsletter email.
+      </p>
+    </div>
+  </header>
+
+  <main class="px-6 pb-28">
+    <article class="prose-dark mx-auto max-w-3xl border-t border-white/10 pt-12">
+      <h2>Normal visits</h2>
+      <p>
+        The site is served by Cloudflare, which may process standard network information such as
+        your IP address to deliver pages and protect the service. Prabhava Labs does not copy that
+        information into its own analytics database. The interactive globe uses a fixed set of
+        public cities. It does not look up your location.
+      </p>
+
+      <h2>Newsletter subscriptions</h2>
+      <p>
+        If you subscribe, the site stores your email address, the time you subscribed, and the
+        source label <code>site-footer</code> in a Cloudflare D1 database. A hidden bot field and a
+        short request limit help protect that form from abuse. No marketing profile is built from
+        your address, and it is not sold or shared with advertisers.
+      </p>
+
+      <h2>Cookies and local storage</h2>
+      <p>
+        The public site does not set tracking cookies. It does not need local storage for ordinary
+        reading. External links, including GitHub and X, have their own privacy practices once you
+        leave this site.
+      </p>
+
+      <h2>Removal and questions</h2>
+      <p>
+        To unsubscribe or ask for your email to be removed, write to
+        <a href="mailto:hello@prabhavalabs.com">hello@prabhavalabs.com</a> from the same address.
+        This notice will be updated if the site starts collecting anything new.
+      </p>
+
+      <p><small>Last updated July 26, 2026.</small></p>
+    </article>
+  </main>
+
+  <Footer client:visible />
+</Layout>
