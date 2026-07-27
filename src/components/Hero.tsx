@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { Radio } from 'lucide-react';
 import { GitHubMark } from './BrandIcons';
 
 // three.js touches `window` at import time — only load in the browser so the
@@ -45,29 +46,22 @@ function Words({
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [place, setPlace] = useState<string | null>(null);
   const [loadGlobe, setLoadGlobe] = useState(false);
-  const reduceMotion = useReducedMotion();
-  useEffect(() => {
-    const compact = window.matchMedia('(max-width: 767px)').matches;
-    const connection = (
-      navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }
-    ).connection;
-    const constrained =
-      connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g';
-    if (compact || reduceMotion || constrained) return;
 
+  useEffect(() => {
     const activate = () => setLoadGlobe(true);
     const idleWindow = window as Window & {
       requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
       cancelIdleCallback?: (id: number) => void;
     };
     if (idleWindow.requestIdleCallback) {
-      const id = idleWindow.requestIdleCallback(activate, { timeout: 1800 });
+      const id = idleWindow.requestIdleCallback(activate, { timeout: 900 });
       return () => idleWindow.cancelIdleCallback?.(id);
     }
-    const id = globalThis.setTimeout(activate, 700);
+    const id = globalThis.setTimeout(activate, 300);
     return () => globalThis.clearTimeout(id);
-  }, [reduceMotion]);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -86,18 +80,14 @@ export default function Hero() {
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_rgba(124,111,212,0.14)_0%,_transparent_60%)]" />
 
-      {/* The WebGL globe is delayed and skipped on small or constrained devices. */}
+      {/* The globe is deferred until the hero copy is painted, then shown at every viewport. */}
       <motion.div
         style={{ y: globeY, opacity: globeOpacity }}
         className="absolute inset-x-0 bottom-[-42vh] z-0 mx-auto h-[95vh] w-full max-w-6xl md:bottom-[-52vh] md:h-[115vh]"
       >
-        <div
-          aria-hidden="true"
-          className="absolute bottom-[26%] left-1/2 h-[46vw] max-h-[34rem] min-h-64 w-[46vw] min-w-64 -translate-x-1/2 rounded-full border border-violet-300/15 bg-[radial-gradient(circle_at_48%_40%,rgba(167,139,250,0.16),rgba(8,8,18,0.92)_58%,transparent_70%)] shadow-[0_0_120px_rgba(124,111,212,0.12)]"
-        />
         {loadGlobe && (
           <Suspense fallback={null}>
-            <HeroGlobe />
+            <HeroGlobe onLocated={setPlace} />
           </Suspense>
         )}
       </motion.div>
@@ -162,6 +152,17 @@ export default function Hero() {
           </motion.a>
         </motion.div>
 
+        {place && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="liquid-glass mt-8 flex items-center gap-2 rounded-full px-4 py-2 text-xs text-white/60"
+          >
+            <Radio size={12} className="text-violet-300/80" aria-hidden="true" />
+            signal received from {place}
+          </motion.div>
+        )}
       </motion.div>
     </section>
   );

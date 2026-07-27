@@ -4,7 +4,7 @@ description: 'An engineering account of Salli, from brittle regular expressions 
 date: 2026-07-26
 tags: ['flutter', 'on-device ML', 'privacy', 'android']
 image: '/images/blog/salli/salli-engineering-cover.webp'
-imageAlt: 'An abstract Android phone turns private SMS fragments into structured personal finance data on the device'
+imageAlt: 'A technical diagram shows private SMS passing through an on-device safety gate, evidence extraction, and human review'
 imageWidth: 1672
 imageHeight: 941
 category: 'engineering'
