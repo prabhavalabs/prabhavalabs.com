@@ -4,7 +4,7 @@ description: 'An engineering account of Salli, from brittle regular expressions 
 date: 2026-07-26
 tags: ['flutter', 'on-device ML', 'privacy', 'android']
 image: '/images/blog/salli/salli-engineering-cover.webp'
-imageAlt: 'A technical diagram shows private SMS passing through an on-device safety gate, evidence extraction, and human review'
+imageAlt: 'A private glass ledger turns an incoming emerald message signal into an ordered row of warm ledger entries'
 imageWidth: 1672
 imageHeight: 941
 category: 'engineering'
