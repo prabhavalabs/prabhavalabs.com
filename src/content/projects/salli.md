@@ -3,7 +3,7 @@ title: 'Salli'
 tagline: 'A private money companion built for Sri Lankan bank SMS'
 description: 'A local-first Flutter app that turns supported transaction SMS into an editable ledger, then helps plan the distance to payday with budgets, recurring payments, accounts, and visual insights.'
 tags: ['Flutter', 'On-device ML', 'Android', 'Local-first']
-repo: 'https://github.com/theetaz/salli'
+repo: 'https://github.com/prabhavalabs/salli'
 status: 'active'
 featured: true
 order: 1
