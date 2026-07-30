@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1600" role="img" aria-labelledby="title desc">
+  <title id="title">How Salli turns a bank alert into a reviewed transaction</title>
+  <desc id="desc">A vertical mobile diagram showing a bank alert passing through a rule engine, local intelligence, exact detail extraction, and user review before it is saved to the encrypted on-device ledger.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07110e"/>
+      <stop offset="1" stop-color="#090b13"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a87826"/>
+      <stop offset="1" stop-color="#e2b54a"/>
+    </linearGradient>
+    <filter id="soft-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1l10 5-10 5z" fill="#d8aa3e"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="1600" rx="42" fill="url(#background)"/>
+  <text x="360" y="65" text-anchor="middle" fill="#d8aa3e" font-family="system-ui, sans-serif" font-size="19" font-weight="700" letter-spacing="3">ON THE PHONE · AVAILABLE OFFLINE</text>
+  <text x="360" y="112" text-anchor="middle" fill="#f5f0e4" font-family="system-ui, sans-serif" font-size="34" font-weight="700">From bank alert to private ledger</text>
+
+  <g fill="none" stroke="#d8aa3e" stroke-opacity=".5" stroke-width="4" marker-end="url(#arrow)">
+    <path d="M360 365v46"/>
+    <path d="M360 620v46"/>
+    <path d="M360 875v46"/>
+    <path d="M360 1130v46"/>
+  </g>
+
+  <g font-family="system-ui, sans-serif">
+    <g transform="translate(60 160)">
+      <rect width="600" height="205" rx="32" fill="#121c21" stroke="#2c3942" stroke-width="2"/>
+      <rect x="48" y="55" width="145" height="95" rx="22" fill="#f5f0e4"/>
+      <path d="M74 83h78M74 106h92M74 129h56" stroke="#005b46" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="191" cy="61" r="11" fill="#35c69a"/>
+      <text x="235" y="82" fill="#f5f0e4" font-size="30" font-weight="700">Bank alert</text>
+      <text x="235" y="125" fill="#a9b5c8" font-size="23">A supported SMS arrives</text>
+      <text x="235" y="159" fill="#a9b5c8" font-size="23">on the phone</text>
+    </g>
+
+    <g transform="translate(60 415)">
+      <rect width="600" height="205" rx="32" fill="#101923" stroke="#263443" stroke-width="2"/>
+      <circle cx="120" cy="102" r="54" fill="#18291f" stroke="#35c69a" stroke-width="3"/>
+      <path d="M96 102l17 17 36-41" fill="none" stroke="#35c69a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="215" y="76" fill="#f5f0e4" font-size="30" font-weight="700">Rule engine</text>
+      <text x="215" y="119" fill="#a9b5c8" font-size="23">Blocks OTPs, promotions,</text>
+      <text x="215" y="153" fill="#a9b5c8" font-size="23">failed and pending alerts</text>
+    </g>
+
+    <g transform="translate(60 670)">
+      <rect width="600" height="205" rx="32" fill="#101923" stroke="#263443" stroke-width="2"/>
+      <g transform="translate(120 102)" fill="none" stroke="#d8aa3e" stroke-width="5">
+        <circle r="54" stroke-opacity=".45"/>
+        <circle r="10" fill="#d8aa3e" filter="url(#soft-glow)"/>
+        <path d="M0-42v21M0 21v21M-42 0h21M21 0h21M-30-30l16 16M14 14l16 16M30-30L14-14M-14 14l-16 16"/>
+      </g>
+      <text x="215" y="76" fill="#f5f0e4" font-size="30" font-weight="700">Local intelligence</text>
+      <text x="215" y="119" fill="#a9b5c8" font-size="23">Known bank formats and a</text>
+      <text x="215" y="153" fill="#a9b5c8" font-size="23">built-in local classifier</text>
+    </g>
+
+    <g transform="translate(60 925)">
+      <rect width="600" height="205" rx="32" fill="#101923" stroke="#263443" stroke-width="2"/>
+      <g fill="#d8aa3e">
+        <rect x="58" y="58" width="72" height="18" rx="9"/>
+        <rect x="143" y="58" width="50" height="18" rx="9" opacity=".5"/>
+        <rect x="58" y="94" width="105" height="18" rx="9" opacity=".75"/>
+        <rect x="176" y="94" width="25" height="18" rx="9" opacity=".4"/>
+        <rect x="58" y="130" width="50" height="18" rx="9" opacity=".5"/>
+        <rect x="121" y="130" width="80" height="18" rx="9" opacity=".85"/>
+      </g>
+      <text x="240" y="76" fill="#f5f0e4" font-size="30" font-weight="700">Exact details</text>
+      <text x="240" y="119" fill="#a9b5c8" font-size="23">Amount, account, merchant,</text>
+      <text x="240" y="153" fill="#a9b5c8" font-size="23">and date come from the SMS</text>
+    </g>
+
+    <g transform="translate(60 1180)">
+      <rect width="600" height="205" rx="32" fill="#1b1710" stroke="#6d5320" stroke-width="2"/>
+      <circle cx="120" cy="102" r="54" fill="url(#gold)"/>
+      <path d="M95 102l18 18 39-44" fill="none" stroke="#07110e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="215" y="76" fill="#f5f0e4" font-size="30" font-weight="700">You review</text>
+      <text x="215" y="119" fill="#bcb39f" font-size="23">Correct or confirm before the</text>
+      <text x="215" y="153" fill="#bcb39f" font-size="23">encrypted local ledger</text>
+    </g>
+  </g>
+
+  <g transform="translate(95 1450)">
+    <rect width="530" height="88" rx="44" fill="#0f211b" stroke="#235a48" stroke-width="2"/>
+    <path d="M48 44h32M64 28v32" stroke="#35c69a" stroke-width="5" stroke-linecap="round"/>
+    <text x="102" y="53" fill="#f5f0e4" font-family="system-ui, sans-serif" font-size="22" font-weight="650">No message is uploaded for processing</text>
+  </g>
+</svg>
