@@ -5,21 +5,27 @@ import * as THREE from 'three';
 // Prabhava Labs' point of origin — Colombo, Sri Lanka.
 const ORIGIN = { lat: 6.9271, lng: 79.8612 };
 
-// Ambient traffic so the globe feels alive before/without geolocation.
+// Ambient traffic keeps the globe alive while the visitor arc is located.
 const CITIES: [number, number][] = [
-  [37.7749, -122.4194], // San Francisco
-  [40.7128, -74.006], // New York
-  [51.5074, -0.1278], // London
-  [52.52, 13.405], // Berlin
-  [35.6762, 139.6503], // Tokyo
-  [1.3521, 103.8198], // Singapore
-  [-33.8688, 151.2093], // Sydney
-  [19.076, 72.8777], // Mumbai
-  [55.7558, 37.6173], // Moscow
-  [-23.5505, -46.6333], // São Paulo
+  [37.7749, -122.4194],
+  [40.7128, -74.006],
+  [51.5074, -0.1278],
+  [52.52, 13.405],
+  [35.6762, 139.6503],
+  [1.3521, 103.8198],
+  [-33.8688, 151.2093],
+  [19.076, 72.8777],
+  [55.7558, 37.6173],
+  [-23.5505, -46.6333],
 ];
 
-type Arc = { startLat: number; startLng: number; endLat: number; endLng: number; isVisitor?: boolean };
+type Arc = {
+  startLat: number;
+  startLng: number;
+  endLat: number;
+  endLng: number;
+  isVisitor?: boolean;
+};
 
 export default function HeroGlobe({
   onLocated,
@@ -28,50 +34,94 @@ export default function HeroGlobe({
 }) {
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ w: 0, h: 0 });
+  const [size, setSize] = useState({ width: 0, height: 0 });
   const [countries, setCountries] = useState<{ features: object[] }>({ features: [] });
   const [arcs, setArcs] = useState<Arc[]>(
-    CITIES.map(([lat, lng]) => ({ startLat: lat, startLng: lng, endLat: ORIGIN.lat, endLng: ORIGIN.lng }))
+    CITIES.map(([lat, lng]) => ({
+      startLat: lat,
+      startLng: lng,
+      endLat: ORIGIN.lat,
+      endLng: ORIGIN.lng,
+    }))
   );
 
-  // Track container size.
+  // Keep the renderer matched to its responsive hero container.
   useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => {
-      setSize({ w: e.contentRect.width, h: e.contentRect.height });
+    const element = wrapRef.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => {
+      setSize({
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+      });
     });
-    ro.observe(el);
-    return () => ro.disconnect();
+    observer.observe(element);
+    return () => observer.disconnect();
   }, []);
 
-  // Land dots.
+  // Restore the dotted land masses used by the original globe.
   useEffect(() => {
-    fetch('/data/countries.geojson')
-      .then((r) => r.json())
+    const controller = new AbortController();
+    fetch('/data/countries.geojson', { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Country data failed with ${response.status}`);
+        return response.json();
+      })
       .then(setCountries)
-      .catch(() => {});
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        console.warn('Could not load globe country data.', error);
+      });
+    return () => controller.abort();
   }, []);
 
-  // Arc from the visitor's location to the origin.
+  // Add a single visitor arc using Cloudflare's same-origin, coarse location.
+  // The browser no longer shares the visitor's IP with a third-party service.
   useEffect(() => {
-    const ctrl = new AbortController();
-    fetch('https://ipwho.is/', { signal: ctrl.signal })
-      .then((r) => r.json())
+    const controller = new AbortController();
+    fetch('/api/location', { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Location request failed with ${response.status}`);
+        return response.json();
+      })
       .then((geo) => {
         if (!geo?.success || typeof geo.latitude !== 'number') return;
-        setArcs((prev) => [
-          ...prev,
-          { startLat: geo.latitude, startLng: geo.longitude, endLat: ORIGIN.lat, endLng: ORIGIN.lng, isVisitor: true },
+        setArcs((current) => [
+          ...current,
+          {
+            startLat: geo.latitude,
+            startLng: geo.longitude,
+            endLat: ORIGIN.lat,
+            endLng: ORIGIN.lng,
+            isVisitor: true,
+          },
         ]);
         const place = [geo.city, geo.country].filter(Boolean).join(', ');
         if (place) onLocated?.(place);
-        // Face the visitor's part of the world.
-        globeRef.current?.pointOfView({ lat: (geo.latitude + ORIGIN.lat) / 2, lng: (geo.longitude + ORIGIN.lng) / 2, altitude: 2.1 }, 1600);
+        globeRef.current?.pointOfView(
+          {
+            lat: (geo.latitude + ORIGIN.lat) / 2,
+            lng: (geo.longitude + ORIGIN.lng) / 2,
+            altitude: 2.1,
+          },
+          1600
+        );
       })
-      .catch(() => {});
-    return () => ctrl.abort();
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        console.warn('Could not locate the visitor arc.', error);
+      });
+    return () => {
+      controller.abort();
+    };
   }, [onLocated]);
+
+  const globeMaterial = new THREE.MeshPhongMaterial({
+    color: new THREE.Color('#0a0a14'),
+    transparent: true,
+    opacity: 0.95,
+    shininess: 8,
+  });
 
   const onReady = () => {
     const globe = globeRef.current;
@@ -84,20 +134,13 @@ export default function HeroGlobe({
     globe.pointOfView({ lat: 12, lng: 60, altitude: 2.1 }, 0);
   };
 
-  const globeMaterial = new THREE.MeshPhongMaterial({
-    color: new THREE.Color('#0a0a14'),
-    transparent: true,
-    opacity: 0.95,
-    shininess: 8,
-  });
-
   return (
-    <div ref={wrapRef} className="h-full w-full cursor-grab active:cursor-grabbing">
-      {size.w > 0 && (
+    <div ref={wrapRef} aria-hidden="true" className="h-full w-full cursor-grab active:cursor-grabbing">
+      {size.width > 0 && (
         <Globe
           ref={globeRef}
-          width={size.w}
-          height={size.h}
+          width={size.width}
+          height={size.height}
           backgroundColor="rgba(0,0,0,0)"
           globeMaterial={globeMaterial}
           showGraticules={false}
@@ -109,18 +152,20 @@ export default function HeroGlobe({
           hexPolygonAltitude={0.006}
           hexPolygonColor={() => 'rgba(255,255,255,0.62)'}
           arcsData={arcs}
-          arcColor={(a: object) =>
-            (a as Arc).isVisitor
+          arcColor={(arc: object) =>
+            (arc as Arc).isVisitor
               ? ['rgba(255,255,255,0.95)', 'rgba(167,139,250,1)']
               : ['rgba(167,139,250,0.35)', 'rgba(255,255,255,0.5)']
           }
-          arcStroke={(a: object) => ((a as Arc).isVisitor ? 0.9 : 0.42)}
+          arcStroke={(arc: object) => ((arc as Arc).isVisitor ? 0.9 : 0.42)}
           arcAltitudeAutoScale={0.42}
           arcDashLength={0.45}
           arcDashGap={1.6}
-          arcDashAnimateTime={(a: object) => ((a as Arc).isVisitor ? 2100 : 3400)}
+          arcDashAnimateTime={(arc: object) => ((arc as Arc).isVisitor ? 2100 : 3400)}
           ringsData={[ORIGIN]}
-          ringColor={() => (t: number) => `rgba(167,139,250,${Math.max(0, 0.7 * (1 - t))})`}
+          ringColor={() => (time: number) =>
+            `rgba(167,139,250,${Math.max(0, 0.7 * (1 - time))})`
+          }
           ringMaxRadius={4.5}
           ringPropagationSpeed={1.6}
           ringRepeatPeriod={1400}

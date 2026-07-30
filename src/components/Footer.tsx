@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'motion/react';
-import { Github, Twitter, Globe, ArrowRight, Check, Loader2 } from 'lucide-react';
+import { GlobeIcon, ArrowRight, Check, Loader2 } from 'lucide-react';
+import { GitHubMark, XMark } from './BrandIcons';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -9,10 +10,11 @@ export default function Footer() {
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
-  const subscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+  const subscribe = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (state === 'loading' || state === 'done') return;
     setState('loading');
@@ -23,7 +25,7 @@ export default function Footer() {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, website: honeypot }),
+        body: JSON.stringify({ email, website: honeypot, consent }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string };
       if (res.ok && data.ok) {
@@ -60,15 +62,21 @@ export default function Footer() {
           className="mx-auto mt-10 w-full max-w-xl"
           onSubmit={subscribe}
         >
-          <div className="liquid-glass flex items-center gap-3 rounded-full py-2 pl-6 pr-2">
+          <label htmlFor="newsletter-email" className="sr-only">
+            Email address
+          </label>
+          <div className="liquid-glass flex items-center gap-3 rounded-full py-2 pl-6 pr-2 focus-within:ring-2 focus-within:ring-violet-300/70">
             <input
+              id="newsletter-email"
+              name="email"
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={state === 'done'}
               placeholder="Enter your email"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/40 disabled:opacity-60"
+              aria-describedby="newsletter-note newsletter-status"
+              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/60 disabled:opacity-60"
             />
             {/* Honeypot — hidden from humans, tempting for bots. */}
             <input
@@ -94,13 +102,32 @@ export default function Footer() {
               )}
             </button>
           </div>
+          <label className="mx-auto mt-4 flex max-w-lg items-start justify-center gap-2.5 text-left text-xs leading-relaxed text-white/65">
+            <input
+              type="checkbox"
+              required
+              checked={consent}
+              onChange={(event) => setConsent(event.target.checked)}
+              disabled={state === 'done'}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-violet-300"
+            />
+            <span>
+              I agree to receive occasional project updates. See the{' '}
+              <a href="/privacy" className="underline underline-offset-2 hover:text-white">
+                privacy note
+              </a>{' '}
+              for what is stored and how to unsubscribe.
+            </span>
+          </label>
           <p
+            id="newsletter-status"
+            aria-live="polite"
             className={`mt-4 text-xs leading-relaxed ${
               state === 'error'
                 ? 'text-amber-300/80'
                 : state === 'done'
                   ? 'text-emerald-300/80'
-                  : 'text-white/40'
+                  : 'text-white/60'
             }`}
           >
             {state === 'idle' || state === 'loading'
@@ -116,9 +143,9 @@ export default function Footer() {
           className="mt-12 flex justify-center gap-4"
         >
           {[
-            { icon: Github, href: 'https://github.com/prabhavalabs', label: 'GitHub' },
-            { icon: Twitter, href: 'https://x.com/PravhavaLabs', label: 'X (Twitter)' },
-            { icon: Globe, href: 'https://prabhavalabs.com', label: 'Website' },
+            { icon: GitHubMark, href: 'https://github.com/prabhavalabs', label: 'GitHub' },
+            { icon: XMark, href: 'https://x.com/PrabhavaLabs', label: 'X (Twitter)' },
+            { icon: GlobeIcon, href: 'https://prabhavalabs.com', label: 'Website' },
           ].map(({ icon: Icon, href, label }) => (
             <a
               key={label}
@@ -133,14 +160,17 @@ export default function Footer() {
           ))}
         </motion.div>
 
-        <div className="mt-16 flex flex-col items-center gap-3 border-t border-white/10 pt-8 text-xs text-white/30 md:flex-row md:justify-between">
+        <div className="mt-16 flex flex-col items-center gap-3 border-t border-white/10 pt-8 text-xs text-white/60 md:flex-row md:justify-between">
           <p className="flex items-center gap-4">
             <span>
               <span className="font-sinhala text-white/50">ප්‍රභව</span> Labs — where ideas take
               origin.
             </span>
-            <a href="/brand" className="text-white/40 underline-offset-2 transition-colors hover:text-white">
+            <a href="/brand" className="text-white/65 underline-offset-2 transition-colors hover:text-white">
               Brand
+            </a>
+            <a href="/privacy" className="text-white/65 underline-offset-2 transition-colors hover:text-white">
+              Privacy
             </a>
           </p>
           <p className="flex items-center gap-2">

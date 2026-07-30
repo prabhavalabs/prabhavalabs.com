@@ -26,9 +26,47 @@ const fmt = d.date.toLocaleDateString(d.lang === 'si' ? 'si-LK' : 'en-US', {
   month: 'long',
   day: 'numeric',
 });
+
+const articleImage = d.image ?? '/images/og.jpg';
+const articleUrl = new URL(`/blog/${post.id}`, Astro.site);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: d.title,
+  description: d.description,
+  datePublished: d.date.toISOString(),
+  inLanguage: d.lang === 'si' ? 'si-LK' : 'en',
+  image: new URL(articleImage, Astro.site).href,
+  mainEntityOfPage: articleUrl.href,
+  author: {
+    '@type': 'Organization',
+    name: 'Prabhava Labs',
+    url: Astro.site?.origin,
+  },
+  publisher: { '@id': `${Astro.site?.origin}/#organization` },
+  keywords: d.tags.join(', '),
+};
+
+const alternates = translation
+  ? [
+      { lang: d.lang, href: `/blog/${post.id}` },
+      { lang: translation.data.lang, href: `/blog/${translation.id}` },
+    ]
+  : [];
 ---
 
-<Layout title={`${d.title} — ප්‍රභව Labs`} description={d.description}>
+<Layout
+  title={`${d.title} — ප්‍රභව Labs`}
+  description={d.description}
+  lang={d.lang}
+  canonicalPath={`/blog/${post.id}`}
+  image={articleImage}
+  type="article"
+  publishedTime={d.date}
+  tags={d.tags}
+  alternates={alternates}
+  structuredData={structuredData}
+>
   <Navbar client:load currentPath="/blog" />
 
   <header class="relative overflow-hidden px-6 pb-12 pt-44 md:pt-52">
@@ -45,10 +83,10 @@ const fmt = d.date.toLocaleDateString(d.lang === 'si' ? 'si-LK' : 'en-US', {
         <ArrowLeft size={14} /> All posts
       </a>
 
-      <div class="mb-6 flex flex-wrap items-center gap-3 text-sm text-white/40">
+      <div class="mb-6 flex flex-wrap items-center gap-3 text-sm text-white/60">
         <time>{fmt}</time>
         {d.tags.map((t) => (
-          <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/40">{t}</span>
+          <span class="rounded-full border border-white/15 px-3 py-1 text-xs text-white/60">{t}</span>
         ))}
         {translation && (
           <span class="liquid-glass flex items-center gap-1 rounded-full p-1 text-xs">
@@ -69,12 +107,24 @@ const fmt = d.date.toLocaleDateString(d.lang === 'si' ? 'si-LK' : 'en-US', {
       <h1 class="font-serif-display text-4xl leading-[1.1] tracking-tight text-white md:text-6xl">
         {d.title}
       </h1>
-      <p class="mt-5 text-lg leading-relaxed text-white/50">{d.description}</p>
+      <p class="mt-5 text-lg leading-relaxed text-white/65">{d.description}</p>
     </div>
   </header>
 
   <main class="px-6 pb-28">
     <article class="prose-dark mx-auto max-w-3xl border-t border-white/10 pt-12">
+      {d.image && (
+        <figure class="mb-14">
+          <img
+            src={d.image}
+            alt={d.imageAlt ?? d.title}
+            width={d.imageWidth}
+            height={d.imageHeight}
+            loading="eager"
+            fetchpriority="high"
+          />
+        </figure>
+      )}
       <Content />
     </article>
   </main>
