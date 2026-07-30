@@ -104,7 +104,7 @@ water.
 
 ## Projects
 
-The featured resident is [Salli](https://github.com/theetaz/salli), a
+The featured resident is [Salli](https://github.com/prabhavalabs/salli), a
 privacy-first Android money companion that turns supported Sri Lankan bank SMS
 into an editable local ledger. Its engineering case study and three user guides
 are published alongside the project. [Vidura](https://github.com/prabhavalabs/vidura)

@@ -144,7 +144,7 @@ export default function Footer() {
         >
           {[
             { icon: GitHubMark, href: 'https://github.com/prabhavalabs', label: 'GitHub' },
-            { icon: XMark, href: 'https://x.com/PravhavaLabs', label: 'X (Twitter)' },
+            { icon: XMark, href: 'https://x.com/PrabhavaLabs', label: 'X (Twitter)' },
             { icon: GlobeIcon, href: 'https://prabhavalabs.com', label: 'Website' },
           ].map(({ icon: Icon, href, label }) => (
             <a
