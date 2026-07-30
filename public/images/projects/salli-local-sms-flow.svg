@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">How Salli turns a bank alert into a reviewed transaction</title>
+  <desc id="desc">A bank alert passes through a rule engine, local intelligence, exact detail extraction, and user review before it is saved to the encrypted on-device ledger.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07110e"/>
+      <stop offset="1" stop-color="#090b13"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a87826"/>
+      <stop offset="1" stop-color="#e2b54a"/>
+    </linearGradient>
+    <filter id="soft-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1l10 5-10 5z" fill="#d8aa3e"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="760" rx="42" fill="url(#background)"/>
+  <text x="800" y="76" text-anchor="middle" fill="#d8aa3e" font-family="system-ui, sans-serif" font-size="20" font-weight="700" letter-spacing="5">ON THE PHONE · AVAILABLE OFFLINE</text>
+  <text x="800" y="122" text-anchor="middle" fill="#f5f0e4" font-family="system-ui, sans-serif" font-size="34" font-weight="700">From bank alert to private ledger</text>
+
+  <g fill="none" stroke="#d8aa3e" stroke-opacity=".5" stroke-width="4" marker-end="url(#arrow)">
+    <path d="M290 364h54"/>
+    <path d="M600 364h54"/>
+    <path d="M910 364h54"/>
+    <path d="M1220 364h54"/>
+  </g>
+
+  <g font-family="system-ui, sans-serif">
+    <g transform="translate(50 218)">
+      <rect width="240" height="292" rx="32" fill="#121c21" stroke="#2c3942" stroke-width="2"/>
+      <rect x="48" y="42" width="144" height="92" rx="22" fill="#f5f0e4"/>
+      <path d="M75 70h76M75 92h91M75 114h55" stroke="#005b46" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="190" cy="49" r="11" fill="#35c69a"/>
+      <text x="120" y="190" text-anchor="middle" fill="#f5f0e4" font-size="24" font-weight="700">Bank alert</text>
+      <text x="120" y="228" text-anchor="middle" fill="#a9b5c8" font-size="18">A supported SMS</text>
+      <text x="120" y="256" text-anchor="middle" fill="#a9b5c8" font-size="18">arrives on the phone</text>
+    </g>
+
+    <g transform="translate(360 218)">
+      <rect width="240" height="292" rx="32" fill="#101923" stroke="#263443" stroke-width="2"/>
+      <circle cx="120" cy="85" r="47" fill="#18291f" stroke="#35c69a" stroke-width="3"/>
+      <path d="M99 85l15 15 31-36" fill="none" stroke="#35c69a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="120" y="190" text-anchor="middle" fill="#f5f0e4" font-size="24" font-weight="700">Rule engine</text>
+      <text x="120" y="228" text-anchor="middle" fill="#a9b5c8" font-size="17">Blocks OTPs, promos,</text>
+      <text x="120" y="256" text-anchor="middle" fill="#a9b5c8" font-size="17">failed and pending alerts</text>
+    </g>
+
+    <g transform="translate(670 218)">
+      <rect width="240" height="292" rx="32" fill="#101923" stroke="#263443" stroke-width="2"/>
+      <g transform="translate(120 84)" fill="none" stroke="#d8aa3e" stroke-width="5">
+        <circle r="45" stroke-opacity=".45"/>
+        <circle r="9" fill="#d8aa3e" filter="url(#soft-glow)"/>
+        <path d="M0-35v18M0 17v18M-35 0h18M17 0h18M-25-25l13 13M12 12l13 13M25-25L12-12M-12 12l-13 13"/>
+      </g>
+      <text x="120" y="190" text-anchor="middle" fill="#f5f0e4" font-size="24" font-weight="700">Local intelligence</text>
+      <text x="120" y="228" text-anchor="middle" fill="#a9b5c8" font-size="17">Known formats and a</text>
+      <text x="120" y="256" text-anchor="middle" fill="#a9b5c8" font-size="17">built-in classifier</text>
+    </g>
+
+    <g transform="translate(980 218)">
+      <rect width="240" height="292" rx="32" fill="#101923" stroke="#263443" stroke-width="2"/>
+      <g fill="#d8aa3e">
+        <rect x="48" y="48" width="69" height="17" rx="8"/>
+        <rect x="130" y="48" width="62" height="17" rx="8" opacity=".5"/>
+        <rect x="48" y="84" width="104" height="17" rx="8" opacity=".75"/>
+        <rect x="165" y="84" width="27" height="17" rx="8" opacity=".4"/>
+        <rect x="48" y="120" width="52" height="17" rx="8" opacity=".5"/>
+        <rect x="113" y="120" width="79" height="17" rx="8" opacity=".85"/>
+      </g>
+      <text x="120" y="190" text-anchor="middle" fill="#f5f0e4" font-size="24" font-weight="700">Exact details</text>
+      <text x="120" y="228" text-anchor="middle" fill="#a9b5c8" font-size="17">Amount, account, merchant</text>
+      <text x="120" y="256" text-anchor="middle" fill="#a9b5c8" font-size="17">and date come from the SMS</text>
+    </g>
+
+    <g transform="translate(1290 218)">
+      <rect width="260" height="292" rx="32" fill="#1b1710" stroke="#6d5320" stroke-width="2"/>
+      <circle cx="130" cy="84" r="47" fill="url(#gold)"/>
+      <path d="M108 84l16 16 34-38" fill="none" stroke="#07110e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="130" y="190" text-anchor="middle" fill="#f5f0e4" font-size="24" font-weight="700">You review</text>
+      <text x="130" y="228" text-anchor="middle" fill="#bcb39f" font-size="17">Correct or confirm before</text>
+      <text x="130" y="256" text-anchor="middle" fill="#bcb39f" font-size="17">the encrypted local ledger</text>
+    </g>
+  </g>
+
+  <g transform="translate(530 590)">
+    <rect width="540" height="88" rx="44" fill="#0f211b" stroke="#235a48" stroke-width="2"/>
+    <path d="M52 45h34M69 28v34" stroke="#35c69a" stroke-width="5" stroke-linecap="round"/>
+    <text x="111" y="54" fill="#f5f0e4" font-family="system-ui, sans-serif" font-size="22" font-weight="650">No message is uploaded for processing</text>
+  </g>
+</svg>
