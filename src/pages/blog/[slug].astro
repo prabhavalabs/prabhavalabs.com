@@ -38,11 +38,17 @@ const structuredData = {
   inLanguage: d.lang === 'si' ? 'si-LK' : 'en',
   image: new URL(articleImage, Astro.site).href,
   mainEntityOfPage: articleUrl.href,
-  author: {
-    '@type': 'Organization',
-    name: 'Prabhava Labs',
-    url: Astro.site?.origin,
-  },
+  author: d.author
+    ? {
+        '@type': 'Person',
+        name: d.author,
+        ...(d.authorUrl ? { url: d.authorUrl } : {}),
+      }
+    : {
+        '@type': 'Organization',
+        name: 'Prabhava Labs',
+        url: Astro.site?.origin,
+      },
   publisher: { '@id': `${Astro.site?.origin}/#organization` },
   keywords: d.tags.join(', '),
 };
@@ -84,6 +90,12 @@ const alternates = translation
       </a>
 
       <div class="mb-6 flex flex-wrap items-center gap-3 text-sm text-white/60">
+        {d.author && (
+          <span>
+            By{' '}
+            {d.authorUrl ? <a class="transition-colors hover:text-white" href={d.authorUrl}>{d.author}</a> : d.author}
+          </span>
+        )}
         <time>{fmt}</time>
         {d.tags.map((t) => (
           <span class="rounded-full border border-white/15 px-3 py-1 text-xs text-white/60">{t}</span>
