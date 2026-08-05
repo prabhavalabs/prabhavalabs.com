@@ -31,6 +31,11 @@ body {
   outline-offset: 4px;
 }
 
+/* The newsletter field delegates its focus indicator to the rounded form container. */
+.newsletter-email-input:focus-visible {
+  outline: none;
+}
+
 /* hide scrollbar chrome, keep function */
 ::-webkit-scrollbar {
   width: 10px;

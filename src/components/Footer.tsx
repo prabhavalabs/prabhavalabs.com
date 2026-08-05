@@ -76,7 +76,7 @@ export default function Footer() {
               disabled={state === 'done'}
               placeholder="Enter your email"
               aria-describedby="newsletter-note newsletter-status"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/60 disabled:opacity-60"
+              className="newsletter-email-input w-full bg-transparent text-sm text-white outline-none placeholder:text-white/60 disabled:opacity-60"
             />
             {/* Honeypot — hidden from humans, tempting for bots. */}
             <input
