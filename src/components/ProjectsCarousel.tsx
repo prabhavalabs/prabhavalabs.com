@@ -26,20 +26,23 @@ export default function ProjectsCarousel({ projects }: { projects: ProjectCard[]
     if (e.pointerType !== 'mouse') return;
     const el = trackRef.current;
     if (!el) return;
-    // Stop native link/image dragging from hijacking the gesture, and keep
-    // receiving moves even when the pointer crosses child elements.
-    e.preventDefault();
-    el.setPointerCapture(e.pointerId);
     drag.current = { down: true, startX: e.clientX, startLeft: el.scrollLeft, moved: false };
-    el.style.scrollBehavior = 'auto';
-    el.style.scrollSnapType = 'none';
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
     const el = trackRef.current;
     if (!el || !drag.current.down) return;
     const dx = e.clientX - drag.current.startX;
-    if (Math.abs(dx) > 4) drag.current.moved = true;
+
+    if (!drag.current.moved) {
+      if (Math.abs(dx) <= 4) return;
+      drag.current.moved = true;
+      el.setPointerCapture(e.pointerId);
+      el.style.scrollBehavior = 'auto';
+      el.style.scrollSnapType = 'none';
+    }
+
+    e.preventDefault();
     el.scrollLeft = drag.current.startLeft - dx;
   };
 
@@ -139,6 +142,7 @@ export default function ProjectsCarousel({ projects }: { projects: ProjectCard[]
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
           onPointerLeave={endDrag}
+          onDragStart={(e) => e.preventDefault()}
           onClickCapture={onClickCapture}
           aria-label="Open-source projects"
           className="scrollbar-none flex cursor-grab select-none snap-x snap-mandatory scroll-pl-6 items-stretch gap-6 overflow-x-auto px-6 pb-4 active:cursor-grabbing md:scroll-pl-[max(1.5rem,calc((100vw-72rem)/2))] md:px-[max(1.5rem,calc((100vw-72rem)/2))]"
