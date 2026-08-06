@@ -25,21 +25,31 @@ export function Card({
   project,
   index,
   instant = false,
+  priority = false,
 }: {
   project: ProjectCard;
   index: number;
-  /** Skip scroll-reveal and lazy loading — needed inside horizontal carousels. */
+  /** Skip scroll-reveal — needed inside horizontal carousels. */
   instant?: boolean;
+  /** Prioritize only an image that can be the page's initial LCP candidate. */
+  priority?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const image = project.image
+    ? project.image.replace(/\.[^./]+$/, '-card.webp')
+    : `/images/card-${(index % 3) + 1}.jpg`;
 
   return (
     <motion.div
       ref={ref}
-      initial={instant ? false : { opacity: 0, y: 50 }}
-      animate={instant || inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: EASE, delay: instant ? 0 : (index % 3) * 0.12 }}
+      initial={instant || priority ? false : { opacity: 0, y: 50 }}
+      animate={instant || priority || inView ? { opacity: 1, y: 0 } : {}}
+      transition={{
+        duration: 0.8,
+        ease: EASE,
+        delay: instant || priority ? 0 : (index % 3) * 0.12,
+      }}
       className="liquid-glass group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl transition-colors hover:bg-white/[0.03]"
     >
       <a
@@ -49,9 +59,12 @@ export function Card({
       />
       <div className="relative aspect-video overflow-hidden">
         <img
-          src={project.image ?? `/images/card-${(index % 3) + 1}.jpg`}
+          src={image}
           alt=""
-          loading={instant ? 'eager' : 'lazy'}
+          width="720"
+          height="405"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
@@ -134,7 +147,7 @@ export default function ProjectsGrid({
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
           {projects.map((p, i) => (
-            <Card key={p.id} project={p} index={i} />
+            <Card key={p.id} project={p} index={i} priority={standalone && i < 3} />
           ))}
         </div>
       </div>

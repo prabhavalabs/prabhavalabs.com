@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'motion/react';
+import { shouldLoadEnhancedVisualInBrowser } from '../lib/enhanced-visuals.js';
 
 const OriginGalaxy = lazy(() => import('./OriginGalaxy'));
 
@@ -19,8 +20,8 @@ const blocks = [
 export default function Philosophy() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [loadVisual, setLoadVisual] = useState(false);
+  useEffect(() => setLoadVisual(shouldLoadEnhancedVisualInBrowser()), []);
 
   // Parallax: the overscanned video drifts vertically as the section scrolls.
   const { scrollYProgress } = useScroll({
@@ -53,7 +54,7 @@ export default function Philosophy() {
             className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-black"
           >
             <motion.div style={{ y: videoY }} className="absolute -inset-y-10 inset-x-0">
-              {mounted && (
+              {loadVisual && (
                 <Suspense fallback={null}>
                   <OriginGalaxy />
                 </Suspense>

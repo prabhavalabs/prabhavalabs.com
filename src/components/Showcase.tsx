@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
+import { shouldLoadEnhancedVisualInBrowser } from '../lib/enhanced-visuals.js';
 
 const ParticleWave = lazy(() => import('./ParticleWave'));
 
@@ -17,8 +18,8 @@ export type ShowcaseProject = {
 export default function Showcase({ project }: { project: ShowcaseProject | null }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [loadVisual, setLoadVisual] = useState(false);
+  useEffect(() => setLoadVisual(shouldLoadEnhancedVisualInBrowser()), []);
 
   if (!project) return null;
 
@@ -29,7 +30,7 @@ export default function Showcase({ project }: { project: ShowcaseProject | null 
     >
       {/* Full-bleed interactive particle terrain. */}
       <div className="absolute inset-0">
-        {mounted && (
+        {loadVisual && (
           <Suspense fallback={null}>
             <ParticleWave />
           </Suspense>

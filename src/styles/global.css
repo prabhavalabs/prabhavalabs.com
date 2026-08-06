@@ -1,5 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+Sinhala:wght@400;500&display=swap');
 @import 'tailwindcss';
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 400;
+  src: url('@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-display: optional;
+  font-weight: 400;
+  src: url('@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Noto Serif Sinhala';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 400;
+  src: url('@fontsource/noto-serif-sinhala/files/noto-serif-sinhala-sinhala-400-normal.woff2') format('woff2');
+}
 
 @theme {
   --font-serif: 'Instrument Serif', serif;

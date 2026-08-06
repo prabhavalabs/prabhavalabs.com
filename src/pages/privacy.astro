@@ -31,8 +31,9 @@ import Starfield from '../components/Starfield';
         A small site with a <em class="italic text-white/65">small data footprint.</em>
       </h1>
       <p class="mt-6 max-w-2xl text-base leading-relaxed text-white/65">
-        Prabhava Labs does not run behavioural analytics, advertising trackers, or an account
-        system. I collect one thing only when you choose to share it: your newsletter email.
+        Prabhava Labs does not run advertising trackers, build visitor profiles, or use an account
+        system. It uses privacy-first, aggregate analytics to understand site traffic and page
+        performance, and collects your newsletter email only when you choose to share it.
       </p>
     </div>
   </header>
@@ -42,9 +43,15 @@ import Starfield from '../components/Starfield';
       <h2>Normal visits</h2>
       <p>
         The site is served by Cloudflare, which may process standard network information such as
-        your IP address to deliver pages and protect the service. Prabhava Labs does not copy that
-        information into its own analytics database. The interactive globe uses a fixed set of
-        public cities. It does not look up your location.
+        your IP address to deliver pages and protect the service. For visitors outside the European
+        Union,
+        <a href="https://developers.cloudflare.com/web-analytics/about/" rel="noreferrer"
+          >Cloudflare Web Analytics</a
+        > records aggregate measurements such as page views, referring websites, country, browser,
+        device type, and page performance. Its analytics beacon does not use cookies, and it is
+        configured not to load for visitors in the European Union. Prabhava Labs does not copy IP
+        addresses into its own analytics database or use analytics to identify individual visitors.
+        The interactive globe uses a fixed set of public cities. It does not look up your location.
       </p>
 
       <h2>Newsletter subscriptions</h2>
@@ -57,9 +64,9 @@ import Starfield from '../components/Starfield';
 
       <h2>Cookies and local storage</h2>
       <p>
-        The public site does not set tracking cookies. It does not need local storage for ordinary
-        reading. External links, including GitHub and X, have their own privacy practices once you
-        leave this site.
+        The public site does not set tracking cookies. Cloudflare Web Analytics operates without
+        cookies, and the site does not need local storage for ordinary reading. External links,
+        including GitHub and X, have their own privacy practices once you leave this site.
       </p>
 
       <h2>Removal and questions</h2>
@@ -69,7 +76,7 @@ import Starfield from '../components/Starfield';
         This notice will be updated if the site starts collecting anything new.
       </p>
 
-      <p><small>Last updated July 26, 2026.</small></p>
+      <p><small>Last updated August 6, 2026.</small></p>
     </article>
   </main>
 

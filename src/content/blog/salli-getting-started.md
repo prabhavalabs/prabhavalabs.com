@@ -73,7 +73,7 @@ Tap the gold plus button from the main navigation.
 6. Add a note or labels if useful.
 7. Tap Save transaction.
 
-![The Salli transaction editor with expense, income, category, account, date and note controls](/images/blog/salli/add-transaction.webp)
+<img src="/images/blog/salli/add-transaction.webp" alt="The Salli transaction editor with expense, income, category, account, date and note controls" loading="lazy" decoding="async" />
 
 Income can use built-in categories such as Salary, Freelance, Gift, or Sales.
 The category manager also allows custom names, colours, and icons for both

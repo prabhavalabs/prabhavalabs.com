@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import test, { before } from 'node:test';
 import assert from 'node:assert/strict';
@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 const articlePath = resolve(projectRoot, 'dist/blog/building-agentmeter/index.html');
+const homePath = resolve(projectRoot, 'dist/index.html');
+const projectsPath = resolve(projectRoot, 'dist/projects/index.html');
 const longNameFixtureSourcePath = resolve(
   projectRoot,
   'src/pages/repository-cta-long-name-regression.astro'
@@ -18,6 +20,10 @@ const longNameFixtureOutputPath = resolve(
 const longProjectName =
   'ExtraordinarilyLongUnbrokenRepositoryNameThatMustRemainInsideItsResponsiveCard';
 let articleHtml = '';
+let homeHtml = '';
+let homeCss = '';
+let projectsHtml = '';
+let blogPages = [];
 let longNameFixtureHtml = '';
 
 before(() => {
@@ -33,6 +39,17 @@ before(() => {
       stdio: 'pipe',
     });
     articleHtml = readFileSync(articlePath, 'utf8');
+    homeHtml = readFileSync(homePath, 'utf8');
+    projectsHtml = readFileSync(projectsPath, 'utf8');
+    blogPages = readdirSync(resolve(projectRoot, 'dist/blog'), { recursive: true })
+      .filter((path) => path.endsWith('index.html'))
+      .map((path) => ({
+        path,
+        html: readFileSync(resolve(projectRoot, 'dist/blog', path), 'utf8'),
+      }));
+    const stylesheetHref = homeHtml.match(/<link rel="stylesheet" href="([^"]+)"/)?.[1];
+    assert.ok(stylesheetHref, 'expected the built home page stylesheet');
+    homeCss = readFileSync(resolve(projectRoot, 'dist', stylesheetHref.slice(1)), 'utf8');
     longNameFixtureHtml = readFileSync(longNameFixtureOutputPath, 'utf8');
   } finally {
     rmSync(longNameFixtureSourcePath, { force: true });
@@ -160,4 +177,85 @@ test('keeps a long project name shrinkable and wrappable at responsive widths', 
     'expected the long button label to wrap instead of widening the card'
   );
   assert.match(longNameFixtureHtml, new RegExp(`>${longProjectName} is built`));
+});
+
+test('renders the largest hero heading immediately in the server response', () => {
+  const heroHeading = homeHtml.match(/<h1\b[^>]*>[\s\S]*?<\/h1>/)?.[0];
+  assert.ok(heroHeading, 'expected the home page hero heading');
+  assert.doesNotMatch(heroHeading, /opacity:\s*0|translateY\(110%\)/);
+});
+
+test('renders the primary hero description without waiting for hydration', () => {
+  const heroDescription = homeHtml.match(
+    /<p\b[^>]*>[\s\S]*?Open-source tools, built in public from Sri Lanka[\s\S]*?<\/p>/
+  )?.[0];
+
+  assert.ok(heroDescription, 'expected the home page hero description');
+  assert.doesNotMatch(heroDescription, /opacity:\s*0|translateY\(/);
+});
+
+test('does not eagerly download the off-screen project carousel', () => {
+  const projectImages = openingTags(homeHtml, 'img').filter((tag) =>
+    tag.includes('/images/projects/')
+  );
+
+  assert.ok(projectImages.length > 1, 'expected the real project carousel images');
+  for (const image of projectImages) {
+    assert.match(image, /loading="lazy"/);
+    assert.doesNotMatch(image, /fetchpriority="high"/);
+  }
+});
+
+test('keeps every project carousel image under 50 KiB', () => {
+  const projectImages = openingTags(homeHtml, 'img').filter((tag) =>
+    tag.includes('/images/projects/')
+  );
+
+  for (const image of projectImages) {
+    const imagePath = image.match(/src="([^"]+)"/)?.[1];
+    assert.ok(imagePath, 'expected a project image source');
+    assert.ok(
+      statSync(resolve(projectRoot, 'dist', imagePath.slice(1))).size < 50 * 1024,
+      `expected ${imagePath} to fit within its carousel transfer budget`
+    );
+  }
+});
+
+test('serves fonts from the site without a render-blocking Google Fonts request', () => {
+  assert.doesNotMatch(homeCss, /fonts\.(?:googleapis|gstatic)\.com/);
+});
+
+test('prioritizes the observed Attendly LCP image on the project index', () => {
+  const attendlyImage = openingTags(projectsHtml, 'img').find((tag) =>
+    tag.includes('/images/projects/attendly')
+  );
+
+  assert.ok(attendlyImage, 'expected the Attendly project card image');
+  assert.match(attendlyImage, /loading="eager"/);
+  assert.match(attendlyImage, /fetch[Pp]riority="high"/);
+});
+
+test('keeps the AgentMeter article LCP image under 100 KiB', () => {
+  const articleHero = openingTags(articleHtml, 'img').find((tag) =>
+    tag.includes('agentmeter-desk-hero')
+  );
+  const imagePath = articleHero?.match(/src="([^"]+)"/)?.[1];
+
+  assert.ok(imagePath, 'expected the AgentMeter article hero image');
+  assert.ok(
+    statSync(resolve(projectRoot, 'dist', imagePath.slice(1))).size < 100 * 1024,
+    'expected the built article hero to fit within its LCP transfer budget'
+  );
+});
+
+test('declares loading behavior for every image on every blog page', () => {
+  assert.ok(blogPages.length > 10, 'expected the built blog collection');
+
+  for (const page of blogPages) {
+    for (const image of openingTags(page.html, 'img')) {
+      if (/loading="eager"/.test(image)) continue;
+      assert.match(image, /loading="lazy"/, `expected a lazy image in ${page.path}`);
+      assert.match(image, /decoding="async"/, `expected async decoding in ${page.path}`);
+    }
+  }
 });

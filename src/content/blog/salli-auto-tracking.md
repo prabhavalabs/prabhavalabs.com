@@ -23,7 +23,7 @@ Open More, scroll to Automation and privacy, then choose Auto-tracking. Grant
 SMS permission when Android asks for it. The status should read that supported
 bank SMS are processed on the phone.
 
-![Salli's local automation and privacy menu](/images/blog/salli/privacy-automation.webp)
+<img src="/images/blog/salli/privacy-automation.webp" alt="Salli's local automation and privacy menu" loading="lazy" decoding="async" />
 
 The initial inbox import looks at a limited recent window. After that, a new
 standard SMS is handled when it arrives. Salli does not run a permanent

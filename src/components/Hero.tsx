@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Radio } from 'lucide-react';
 import { GitHubMark } from './BrandIcons';
+import { shouldLoadEnhancedVisualInBrowser } from '../lib/enhanced-visuals.js';
 
 // three.js touches `window` at import time — only load in the browser so the
 // rest of the hero stays server-rendered.
@@ -12,12 +13,10 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 function Words({
   text,
   className = '',
-  delay = 0,
   italicWords = [] as string[],
 }: {
   text: string;
   className?: string;
-  delay?: number;
   italicWords?: string[];
 }) {
   const words = text.split(' ');
@@ -30,14 +29,11 @@ function Words({
             i < words.length - 1 ? 'mr-[0.24em]' : ''
           }`}
         >
-          <motion.span
+          <span
             className={`inline-block ${italicWords.includes(w) ? 'italic text-white/60' : ''}`}
-            initial={{ y: '110%' }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.9, ease: EASE, delay: delay + i * 0.08 }}
           >
             {w}
-          </motion.span>
+          </span>
         </span>
       ))}
     </span>
@@ -50,17 +46,31 @@ export default function Hero() {
   const [loadGlobe, setLoadGlobe] = useState(false);
 
   useEffect(() => {
-    const activate = () => setLoadGlobe(true);
+    if (!shouldLoadEnhancedVisualInBrowser()) return;
+
     const idleWindow = window as Window & {
       requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
       cancelIdleCallback?: (id: number) => void;
     };
-    if (idleWindow.requestIdleCallback) {
-      const id = idleWindow.requestIdleCallback(activate, { timeout: 900 });
-      return () => idleWindow.cancelIdleCallback?.(id);
-    }
-    const id = globalThis.setTimeout(activate, 300);
-    return () => globalThis.clearTimeout(id);
+    let idleId: number | undefined;
+    let timerId: number | undefined;
+    const activate = () => setLoadGlobe(true);
+    const schedule = () => {
+      if (idleWindow.requestIdleCallback) {
+        idleId = idleWindow.requestIdleCallback(activate, { timeout: 2500 });
+      } else {
+        timerId = window.setTimeout(activate, 1200);
+      }
+    };
+
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
+
+    return () => {
+      window.removeEventListener('load', schedule);
+      if (idleId !== undefined) idleWindow.cancelIdleCallback?.(idleId);
+      if (timerId !== undefined) window.clearTimeout(timerId);
+    };
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -80,10 +90,10 @@ export default function Hero() {
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_rgba(124,111,212,0.14)_0%,_transparent_60%)]" />
 
-      {/* The globe is deferred until the hero copy is painted, then shown at every viewport. */}
+      {/* The globe is a progressive enhancement for capable desktop devices. */}
       <motion.div
         style={{ y: globeY, opacity: globeOpacity }}
-        className="absolute inset-x-0 bottom-[-42vh] z-0 mx-auto h-[95vh] w-full max-w-6xl md:bottom-[-52vh] md:h-[115vh]"
+        className="pointer-events-none absolute inset-x-0 bottom-[-42vh] z-0 mx-auto h-[95vh] w-full max-w-6xl md:bottom-[-52vh] md:h-[115vh]"
       >
         {loadGlobe && (
           <Suspense fallback={null}>
@@ -99,38 +109,23 @@ export default function Hero() {
         style={{ y: contentY, opacity: contentOpacity }}
         className="pointer-events-none relative z-10 flex flex-col items-center px-6 pt-40 text-center md:pt-44"
       >
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.35 }}
-          className="mb-6 text-xs font-medium uppercase tracking-[0.35em] text-white/50"
-        >
+        <p className="mb-6 text-xs font-medium uppercase tracking-[0.35em] text-white/50">
           An independent open-source studio
-        </motion.p>
+        </p>
 
         <h1 className="font-serif-display max-w-5xl text-6xl leading-[1.02] tracking-tight text-white sm:text-7xl md:text-8xl lg:text-9xl">
-          <Words text="Where ideas" delay={0.45} />
+          <Words text="Where ideas" />
           <br />
-          <Words text="take origin." delay={0.65} italicWords={['origin.']} />
+          <Words text="take origin." italicWords={['origin.']} />
         </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: EASE, delay: 1.1 }}
-          className="mt-7 max-w-xl text-sm leading-relaxed text-white/60 md:text-base"
-        >
-          ප්‍රභව — <em className="font-serif-display italic text-white/80">prabhava</em> — is the
+        <p className="mt-7 max-w-xl text-sm leading-relaxed text-white/60 md:text-base">
+          ප්‍රභව — <em className="italic text-white/80">prabhava</em> — is the
           Sanskrit word for origin. Open-source tools, built in public from Sri Lanka, connected to
           everywhere.
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: EASE, delay: 1.25 }}
-          className="pointer-events-auto mt-9 flex flex-wrap items-center justify-center gap-4"
-        >
+        <div className="pointer-events-auto mt-9 flex flex-wrap items-center justify-center gap-4">
           <motion.a
             href="/projects"
             whileHover={{ scale: 1.05 }}
@@ -150,19 +145,21 @@ export default function Hero() {
             <GitHubMark size={16} />
             Follow along
           </motion.a>
-        </motion.div>
+        </div>
 
-        {place && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="liquid-glass mt-8 flex items-center gap-2 rounded-full px-4 py-2 text-xs text-white/60"
-          >
-            <Radio size={12} className="text-violet-300/80" aria-hidden="true" />
-            signal received from {place}
-          </motion.div>
-        )}
+        <div data-location-slot aria-live="polite" className="mt-8 hidden min-h-8 md:block">
+          {place ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="liquid-glass flex items-center gap-2 rounded-full px-4 py-2 text-xs text-white/60"
+            >
+              <Radio size={12} className="text-violet-300/80" aria-hidden="true" />
+              signal received from {place}
+            </motion.div>
+          ) : null}
+        </div>
       </motion.div>
     </section>
   );

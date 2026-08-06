@@ -19,7 +19,7 @@ with a chat assistant grounded in the user's watch history. It is
 self-hosted, and the two hardest problems were getting the transcript and
 making the translation readable.
 
-<img src="/images/blog/vidura/watch.png" alt="Vidura's watch page: a YouTube video with Sinhala subtitles overlaid, provenance badges above the transcript" />
+<img src="/images/blog/vidura/watch.png" alt="Vidura's watch page: a YouTube video with Sinhala subtitles overlaid, provenance badges above the transcript" loading="lazy" decoding="async" />
 
 *Figure 1: The watch page. Provenance badges above the transcript report where timestamps came from and which model translated them.*
 
@@ -40,7 +40,7 @@ scraper.
 
 ## The transcript pipeline
 
-<img src="/images/blog/vidura/diagram-transcript.svg" alt="Diagram: direct requests from the VPS get blocked, yt-dlp through a residential proxy reaches the caption track, Gemini audio transcription is the fallback" />
+<img src="/images/blog/vidura/diagram-transcript.svg" alt="Diagram: direct requests from the VPS get blocked, yt-dlp through a residential proxy reaches the caption track, Gemini audio transcription is the fallback" loading="lazy" decoding="async" />
 
 *Figure 2: Transcript acquisition. The primary path uses YouTube's own caption track; audio transcription is the fallback.*
 
@@ -72,7 +72,7 @@ boundaries, and pronouns lost their referents. The root cause is that a
 caption cue is not a sentence; it is wherever the speaker paused.
 Translating cues independently is translating without context.
 
-<img src="/images/blog/vidura/diagram-translate.svg" alt="Diagram: translating caption lines independently causes drift; Vidura sends the entire transcript in one structured-output call" />
+<img src="/images/blog/vidura/diagram-translate.svg" alt="Diagram: translating caption lines independently causes drift; Vidura sends the entire transcript in one structured-output call" loading="lazy" decoding="async" />
 
 *Figure 3: Cue-by-cue translation versus whole-transcript translation.*
 
@@ -92,7 +92,7 @@ video warrants it. Switching is a settings change, not a code change. For
 a self-funded system, that flexibility is what keeps the feature
 economically viable.
 
-<img src="/images/blog/vidura/library.png" alt="Vidura's library page showing processed videos with their sync scores" />
+<img src="/images/blog/vidura/library.png" alt="Vidura's library page showing processed videos with their sync scores" loading="lazy" decoding="async" />
 
 *Figure 4: The library. Each processed video displays its sync score and translation model.*
 
@@ -106,7 +106,7 @@ background, and position adjustments, applied in fullscreen on both
 orientations. The full stack is self-hosted: library, notes, and chat
 history stay on the operator's server.
 
-<img src="/images/blog/vidura/chat.png" alt="Vidura's chat assistant answering a question with citations into the video library" />
+<img src="/images/blog/vidura/chat.png" alt="Vidura's chat assistant answering a question with citations into the video library" loading="lazy" decoding="async" />
 
 *Figure 5: Transcript-grounded chat with citations into the library.*
 

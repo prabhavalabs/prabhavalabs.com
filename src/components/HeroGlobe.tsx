@@ -129,13 +129,14 @@ export default function HeroGlobe({
     const controls = globe.controls();
     controls.autoRotate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     controls.autoRotateSpeed = 0.55;
+    controls.enableRotate = false;
     controls.enableZoom = false;
     controls.enablePan = false;
     globe.pointOfView({ lat: 12, lng: 60, altitude: 2.1 }, 0);
   };
 
   return (
-    <div ref={wrapRef} aria-hidden="true" className="h-full w-full cursor-grab active:cursor-grabbing">
+    <div ref={wrapRef} aria-hidden="true" className="pointer-events-none h-full w-full">
       {size.width > 0 && (
         <Globe
           ref={globeRef}
@@ -170,7 +171,7 @@ export default function HeroGlobe({
           ringPropagationSpeed={1.6}
           ringRepeatPeriod={1400}
           onGlobeReady={onReady}
-          rendererConfig={{ antialias: true, alpha: true }}
+          rendererConfig={{ antialias: false, alpha: true, powerPreference: 'low-power' }}
         />
       )}
     </div>
