@@ -356,7 +356,7 @@ the listing names the ESP32-S3 2.16-inch model before ordering.
   <li><a href="https://www.aliexpress.com/item/1005012589432425.html" target="_blank" rel="noreferrer">View the AliExpress listing</a></li>
 </ul>
 
-<p><small class="text-white/45">Direct, non-affiliate links. Prabhava Labs does not earn from purchases.</small></p>
+<p><small class="text-white/50">Direct, non-affiliate links. Prabhava Labs does not earn from purchases.</small></p>
 
 The [AgentMeter repository](https://github.com/prabhavalabs/agentmeter) contains
 the firmware, Python bridge, native macOS app, versioned schemas, safe fixtures,

@@ -12,24 +12,23 @@ const { repo, title, class: className = '' } = Astro.props;
 const projectName = title.split(':', 1)[0];
 ---
 
-<aside
+<div
   data-repository-cta
-  aria-label={`${projectName} repository`}
   class:list={[
     'liquid-glass relative flex flex-col gap-6 rounded-3xl border border-violet-300/20 p-6 md:flex-row md:items-center md:justify-between md:p-8',
     className,
   ]}
 >
   <div class="pointer-events-none absolute -right-12 -top-16 h-40 w-40 rounded-full bg-violet-400/10 blur-3xl"></div>
-  <div class="relative flex items-start gap-4">
+  <div class="relative flex min-w-0 items-start gap-4">
     <span class="mt-1 inline-flex shrink-0 rounded-full border border-white/15 bg-white/[0.04] p-3 text-white/80">
       <GitHubMark size={20} />
     </span>
-    <span>
+    <div class="min-w-0">
       <span class="block text-[0.65rem] font-medium uppercase tracking-[0.3em] text-violet-200/70">Open source</span>
-      <span class="font-serif-display mt-1 block text-2xl leading-tight text-white">{projectName} is built in the open.</span>
-      <span class="mt-2 block max-w-md text-sm leading-relaxed text-white/60">If the project is useful or interesting, give it a star on GitHub.</span>
-    </span>
+      <h2 class="font-serif-display m-0 mt-1 text-2xl leading-tight text-white">{projectName} is built in the open.</h2>
+      <p class="m-0 mt-2 max-w-md text-sm leading-relaxed text-white/60">If the project is useful or interesting, give it a star on GitHub.</p>
+    </div>
   </div>
 
   <a
@@ -37,9 +36,11 @@ const projectName = title.split(':', 1)[0];
     target="_blank"
     rel="noreferrer"
     aria-label={`Star ${projectName} on GitHub`}
-    class="relative inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98] md:w-auto"
+    class="relative inline-flex w-full min-w-0 max-w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98] md:w-auto"
     style="color: #000; text-decoration: none;"
   >
-    <Star size={16} /> Star {projectName} on GitHub <ArrowUpRight size={15} />
+    <Star size={16} className="shrink-0" />
+    <span class="min-w-0 text-center [overflow-wrap:anywhere]">Star {projectName} on GitHub</span>
+    <ArrowUpRight size={15} className="shrink-0" />
   </a>
-</aside>
+</div>
