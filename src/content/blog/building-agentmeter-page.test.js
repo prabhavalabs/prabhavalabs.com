@@ -44,3 +44,21 @@ test('discloses that the hardware links are non-affiliate', () => {
     /Direct, non-affiliate links\. Prabhava Labs does not earn from purchases\./
   );
 });
+
+test('renders two accessible AgentMeter GitHub star calls to action', () => {
+  const ctaAnchors = [...articleHtml.matchAll(
+    /<a\b[^>]*aria-label="Star AgentMeter on GitHub"[^>]*>/g
+  )].map(([tag]) => tag);
+
+  assert.equal(ctaAnchors.length, 2);
+  for (const anchor of ctaAnchors) {
+    assert.match(anchor, /href="https:\/\/github\.com\/prabhavalabs\/agentmeter"/);
+    assert.match(anchor, /target="_blank"/);
+    assert.match(anchor, /rel="noreferrer"/);
+  }
+
+  assert.equal(
+    (articleHtml.match(/AgentMeter is built in the open\./g) ?? []).length,
+    2
+  );
+});

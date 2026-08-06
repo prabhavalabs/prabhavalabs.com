@@ -10,6 +10,7 @@ imageAlt: 'AgentMeter on a desk showing live Codex, Claude, and Cursor usage on 
 imageWidth: 1350
 imageHeight: 900
 category: 'engineering'
+repo: 'https://github.com/prabhavalabs/agentmeter'
 ---
 
 When I am in the middle of coding, I do not want to open another application

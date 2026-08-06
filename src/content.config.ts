@@ -39,6 +39,7 @@ const blog = defineCollection({
     imageWidth: z.number().int().positive().optional(),
     imageHeight: z.number().int().positive().optional(),
     category: z.enum(['engineering', 'guide', 'studio']).default('engineering'),
+    repo: z.url().optional(),
     series: z.string().optional(),
     seriesOrder: z.number().optional(),
     relatedProject: z.string().optional(),
