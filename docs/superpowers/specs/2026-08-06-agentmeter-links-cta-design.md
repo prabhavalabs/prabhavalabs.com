@@ -42,7 +42,7 @@ This keeps repository metadata in content, presentation in a component, and plac
 
 ## Visual and interaction design
 
-The CTA will use the site’s restrained dark glass treatment, subtle violet border/glow, rounded corners, serif display heading, and muted supporting text. On desktop, copy and button may sit side by side; on mobile, they stack with a full-width tap target. It must remain visually distinct from prose without resembling an advertisement.
+The CTA will use the site’s restrained dark glass treatment, subtle violet border/glow, rounded corners, serif display heading, and muted supporting text. At the `md` breakpoint and above, the copy and button will sit side by side. Below `md`, they will stack and the button will become a full-width tap target. It must remain visually distinct from prose without resembling an advertisement.
 
 External links will open in a new tab with `rel="noreferrer"`. The button will have an accessible label that includes the project name and GitHub destination. Keyboard focus will use the site’s existing visible focus treatment.
 
