@@ -108,11 +108,11 @@ splits, transfer correction, notes, labels, and local attachments.
 
 <div class="article-screenshot-grid">
   <figure>
-    <img src="/images/blog/salli/activity.webp" alt="Salli Activity screen with date range, search and filter controls" loading="lazy" />
+    <img src="/images/blog/salli/activity.webp" alt="Salli Activity screen with date range, search and filter controls" loading="lazy" decoding="async" />
     <figcaption>Activity becomes the audit trail for manual and SMS transactions.</figcaption>
   </figure>
   <figure>
-    <img src="/images/blog/salli/insights.webp" alt="Salli Insights screen with range selector and an empty chart state" loading="lazy" />
+    <img src="/images/blog/salli/insights.webp" alt="Salli Insights screen with range selector and an empty chart state" loading="lazy" decoding="async" />
     <figcaption>Insights stays honest when there is no confirmed data instead of drawing an invented chart.</figcaption>
   </figure>
 </div>
@@ -122,7 +122,7 @@ category share, trend, and account views. Change the range to compare a week,
 month, or payday cycle. An empty chart means the selected range has no
 confirmed data.
 
-![Salli's money tools including budgets, Seettu, categories, labels, runway, goals and accounts](/images/blog/salli/more-features.webp)
+<img src="/images/blog/salli/more-features.webp" alt="Salli's money tools including budgets, Seettu, categories, labels, runway, goals and accounts" loading="lazy" decoding="async" />
 
 ## Privacy controls
 

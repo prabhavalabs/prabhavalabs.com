@@ -90,6 +90,7 @@ classifier cannot fill one in.
       src="/images/projects/salli-local-sms-flow.svg"
       alt="A bank alert moves through Salli's rule engine, local classifier, exact detail extraction, and user review before it reaches the encrypted ledger"
       loading="lazy"
+      decoding="async"
     />
   </picture>
   <figcaption>Every step runs on the phone. The user still makes the final call.</figcaption>

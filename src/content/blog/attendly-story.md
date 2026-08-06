@@ -15,7 +15,7 @@ resolve them. Attendly was built for exactly this operating point: a
 complete attendance, billing, and notification system for a class of 100+
 students, open source, self-hosted on a single low-cost VPS.
 
-<img src="/images/blog/attendly/admin-dashboard.png" alt="Attendly admin dashboard with attendance and revenue summaries" />
+<img src="/images/blog/attendly/admin-dashboard.png" alt="Attendly admin dashboard with attendance and revenue summaries" loading="lazy" decoding="async" />
 
 *Figure 1: The admin dashboard, running on the demo dataset of 172 students.*
 
@@ -55,7 +55,7 @@ model is a real constraint, but a class of 100+ students produces write
 volumes far below the point where it matters. Most systems are smaller
 than their architecture.
 
-<img src="/images/blog/attendly/admin-students.png" alt="Student roster with per-student attendance and billing status" />
+<img src="/images/blog/attendly/admin-students.png" alt="Student roster with per-student attendance and billing status" loading="lazy" decoding="async" />
 
 *Figure 2: The roster view. Each row joins attendance history with billing status.*
 
@@ -75,7 +75,7 @@ whether the server has caught up. On reconnect, the API reconciles queued
 marks against the scheduled session, opening it if check-ins arrive before
 the session was formally started.
 
-<img src="/images/blog/attendly/mobile-session.png" alt="Door check-in screen with QR scanning, manual lookup, and recent check-ins" />
+<img src="/images/blog/attendly/mobile-session.png" alt="Door check-in screen with QR scanning, manual lookup, and recent check-ins" loading="lazy" decoding="async" />
 
 *Figure 3: The check-in screen: QR scanning, manual lookup, and sync status in one view.*
 
@@ -88,7 +88,7 @@ Cloudflare R2 stores uploads when configured. Keeping billing inside the
 attendance system, rather than bolted on, is what turns attendance records
 into evidence that settles disputes.
 
-<img src="/images/blog/attendly/admin-billing.png" alt="Billing view with paid, partial, and unpaid invoices" />
+<img src="/images/blog/attendly/admin-billing.png" alt="Billing view with paid, partial, and unpaid invoices" loading="lazy" decoding="async" />
 
 *Figure 4: Invoice states across the demo dataset: 182 paid, 84 partial, 78 unpaid.*
 

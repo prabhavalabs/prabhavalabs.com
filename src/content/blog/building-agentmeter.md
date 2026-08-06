@@ -5,10 +5,10 @@ date: 2026-08-04
 author: 'Nipun Theekshana'
 tags: ['case-study', 'esp32', 'swiftui', 'bluetooth']
 lang: 'en'
-image: '/images/blog/agentmeter/agentmeter-desk-hero.jpg'
+image: '/images/blog/agentmeter/agentmeter-desk-hero-900.webp'
 imageAlt: 'AgentMeter on a desk showing live Codex, Claude, and Cursor usage on its AMOLED screen'
-imageWidth: 1350
-imageHeight: 900
+imageWidth: 900
+imageHeight: 600
 category: 'engineering'
 repo: 'https://github.com/prabhavalabs/agentmeter'
 ---
@@ -107,7 +107,7 @@ dependable object was where most of the interesting work happened.
 
 AgentMeter now has three parts with deliberately separate responsibilities.
 
-<img src="/images/blog/agentmeter/agentmeter-architecture.webp" alt="AgentMeter architecture showing Codex, Claude, Gemini, and Cursor flowing through CodexBar to the local bridge, macOS app, Bluetooth, USB, and ESP32 AMOLED display" width="1536" height="1024" />
+<img src="/images/blog/agentmeter/agentmeter-architecture.webp" alt="AgentMeter architecture showing Codex, Claude, Gemini, and Cursor flowing through CodexBar to the local bridge, macOS app, Bluetooth, USB, and ESP32 AMOLED display" width="1536" height="1024" loading="lazy" decoding="async" />
 
 *Figure 1: Provider usage stays on the Mac, passes through the local bridge, and reaches the ESP32 display over encrypted BLE or USB.*
 
@@ -121,7 +121,7 @@ This separation keeps credentials away from the hobby hardware. It also keeps
 the firmware neutral about providers. I can add another data source on the Mac
 without designing another screen protocol for it.
 
-<img src="/images/blog/agentmeter/macos-overview-connected.png" alt="AgentMeter macOS overview with a connected device, a 24-hour usage graph, and provider cards" />
+<img src="/images/blog/agentmeter/macos-overview-connected.png" alt="AgentMeter macOS overview with a connected device, a 24-hour usage graph, and provider cards" loading="lazy" decoding="async" />
 
 *Figure 2: The macOS overview joins live device state, local usage history, and current provider windows.*
 
@@ -178,11 +178,11 @@ mode.
 
 <div class="article-screenshot-grid">
   <figure>
-    <img src="/images/blog/agentmeter/macos-device-discovery.png" alt="AgentMeter device discovery sheet scanning for compatible Bluetooth displays" />
+    <img src="/images/blog/agentmeter/macos-device-discovery.png" alt="AgentMeter device discovery sheet scanning for compatible Bluetooth displays" loading="lazy" decoding="async" />
     <figcaption>Figure 3: Discovery filters for compatible AgentMeter services and reports Bluetooth permission problems separately.</figcaption>
   </figure>
   <figure>
-    <img src="/images/blog/agentmeter/macos-device-health.png" alt="Connected AgentMeter device page with Bluetooth signal, USB power, and firmware telemetry" />
+    <img src="/images/blog/agentmeter/macos-device-health.png" alt="Connected AgentMeter device page with Bluetooth signal, USB power, and firmware telemetry" loading="lazy" decoding="async" />
     <figcaption>Figure 4: Once connected, the app reads honest device telemetry instead of guessing unsupported values.</figcaption>
   </figure>
 </div>
@@ -209,11 +209,11 @@ hard-coded pages.
 
 <div class="article-screenshot-grid">
   <figure>
-    <img src="/images/blog/agentmeter/device-codex-detail.jpg" alt="Physical AgentMeter showing the Codex weekly usage detail view" />
+    <img src="/images/blog/agentmeter/device-codex-detail.jpg" alt="Physical AgentMeter showing the Codex weekly usage detail view" loading="lazy" decoding="async" />
     <figcaption>Figure 5: Codex detail with weekly usage and a local reset countdown.</figcaption>
   </figure>
   <figure>
-    <img src="/images/blog/agentmeter/device-claude-detail.jpg" alt="Physical AgentMeter showing Claude session and weekly usage windows" />
+    <img src="/images/blog/agentmeter/device-claude-detail.jpg" alt="Physical AgentMeter showing Claude session and weekly usage windows" loading="lazy" decoding="async" />
     <figcaption>Figure 6: Claude can expose several windows with different reset schedules.</figcaption>
   </figure>
 </div>
@@ -245,11 +245,11 @@ settings panel.
 
 <div class="article-screenshot-grid">
   <figure>
-    <img src="/images/blog/agentmeter/device-agent-settings.jpg" alt="AgentMeter touchscreen settings for choosing which coding agents appear" />
+    <img src="/images/blog/agentmeter/device-agent-settings.jpg" alt="AgentMeter touchscreen settings for choosing which coding agents appear" loading="lazy" decoding="async" />
     <figcaption>Figure 7: Provider visibility can be changed directly on the touchscreen.</figcaption>
   </figure>
   <figure>
-    <img src="/images/blog/agentmeter/macos-display-settings.png" alt="AgentMeter macOS display settings with always-on mode, rotation, brightness, sleep, and alerts" />
+    <img src="/images/blog/agentmeter/macos-display-settings.png" alt="AgentMeter macOS display settings with always-on mode, rotation, brightness, sleep, and alerts" loading="lazy" decoding="async" />
     <figcaption>Figure 8: The same persistent settings are available from the Mac, with a live device preview.</figcaption>
   </figure>
 </div>
@@ -276,11 +276,11 @@ user chooses Quit AgentMeter from the menu bar.
 
 <div class="article-screenshot-grid">
   <figure>
-    <img src="/images/blog/agentmeter/macos-menu-bar.png" alt="AgentMeter menu bar panel with connection state, live provider percentages, navigation, and controls" />
+    <img src="/images/blog/agentmeter/macos-menu-bar.png" alt="AgentMeter menu bar panel with connection state, live provider percentages, navigation, and controls" loading="lazy" decoding="async" />
     <figcaption>Figure 9: The compact menu-bar panel covers the checks I make most often.</figcaption>
   </figure>
   <figure>
-    <img src="/images/blog/agentmeter/macos-menu-bar-codex-detail.png" alt="Expanded Codex details inside the AgentMeter menu bar panel" />
+    <img src="/images/blog/agentmeter/macos-menu-bar-codex-detail.png" alt="Expanded Codex details inside the AgentMeter menu bar panel" loading="lazy" decoding="async" />
     <figcaption>Figure 10: Provider rows expand in place to show quota windows and model-specific details.</figcaption>
   </figure>
 </div>
@@ -309,7 +309,7 @@ events, and hardware values are stored only when the board can measure them.
 The page shows enough connection history to diagnose the bridge without turning
 AgentMeter into an observability system.
 
-<img src="/images/blog/agentmeter/macos-diagnostics.png" alt="AgentMeter diagnostics page with bridge health, Bluetooth details, storage controls, and recent sanitized events" />
+<img src="/images/blog/agentmeter/macos-diagnostics.png" alt="AgentMeter diagnostics page with bridge health, Bluetooth details, storage controls, and recent sanitized events" loading="lazy" decoding="async" />
 
 *Figure 11: Diagnostics expose enough context to debug the bridge while keeping provider data and credentials out.*
 

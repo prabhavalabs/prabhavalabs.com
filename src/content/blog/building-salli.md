@@ -67,7 +67,7 @@ is calculated.
 The experience looks simple because the uncertainty is handled before a row
 reaches the ledger.
 
-<img src="/images/blog/salli/pipeline.svg" alt="Salli's SMS pipeline from safety checks through deterministic evidence and human review" />
+<img src="/images/blog/salli/pipeline.svg" alt="Salli's SMS pipeline from safety checks through deterministic evidence and human review" loading="lazy" decoding="async" />
 
 ## Why regular expressions were necessary but not sufficient
 
@@ -273,11 +273,11 @@ the same reactive source.
 
 <div class="article-screenshot-grid">
   <figure>
-    <img src="/images/blog/salli/add-transaction.webp" alt="Salli full-screen transaction editor with expense and income modes" loading="lazy" />
+    <img src="/images/blog/salli/add-transaction.webp" alt="Salli full-screen transaction editor with expense and income modes" loading="lazy" decoding="async" />
     <figcaption>The manual editor keeps amount, category, merchant, account, date, labels, and notes in one place.</figcaption>
   </figure>
   <figure>
-    <img src="/images/blog/salli/privacy-automation.webp" alt="Salli automation and privacy controls on Android" loading="lazy" />
+    <img src="/images/blog/salli/privacy-automation.webp" alt="Salli automation and privacy controls on Android" loading="lazy" decoding="async" />
     <figcaption>Automation is visible and adjustable. Privacy and support information work offline.</figcaption>
   </figure>
 </div>

@@ -178,6 +178,8 @@ export default function Footer() {
             <img
               src="/images/flag-lk.svg"
               alt="Flag of Sri Lanka"
+              loading="lazy"
+              decoding="async"
               className="h-3.5 w-auto rounded-[2px] opacity-90"
             />
           </p>
