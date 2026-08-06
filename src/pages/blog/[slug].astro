@@ -5,6 +5,7 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Starfield from '../../components/Starfield';
+import ArticleRepositoryCta from '../../components/ArticleRepositoryCta.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -137,7 +138,13 @@ const alternates = translation
           />
         </figure>
       )}
+      {d.repo && d.image && (
+        <ArticleRepositoryCta repo={d.repo} title={d.title} class="mb-14" />
+      )}
       <Content />
+      {d.repo && (
+        <ArticleRepositoryCta repo={d.repo} title={d.title} class="mt-14" />
+      )}
     </article>
   </main>
 
