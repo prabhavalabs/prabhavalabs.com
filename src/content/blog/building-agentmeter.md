@@ -344,6 +344,19 @@ The supported first build needs four things:
 - A Bluetooth-capable Apple-silicon Mac running macOS 14 or later
 - CodexBar configured for the providers you use
 
+### Where to get the hardware
+
+AgentMeter targets the exact Waveshare ESP32-S3-Touch-AMOLED-2.16 board. Closely
+related Waveshare displays use different controllers and pin maps, so confirm
+the listing names the ESP32-S3 2.16-inch model before ordering.
+
+<ul>
+  <li><a href="https://www.waveshare.com/esp32-s3-touch-amoled-2.16.htm" target="_blank" rel="noreferrer">Buy directly from Waveshare</a></li>
+  <li><a href="https://www.aliexpress.com/item/1005012589432425.html" target="_blank" rel="noreferrer">View the AliExpress listing</a></li>
+</ul>
+
+<p><small class="text-white/45">Direct, non-affiliate links. Prabhava Labs does not earn from purchases.</small></p>
+
 The [AgentMeter repository](https://github.com/prabhavalabs/agentmeter) contains
 the firmware, Python bridge, native macOS app, versioned schemas, safe fixtures,
 hardware guide, protocol documentation, and complete setup instructions. The
