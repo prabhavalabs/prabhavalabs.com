@@ -1,6 +1,6 @@
 ---
 title: 'AgentMeter: A Physical Usage Display for AI Coding Tools'
-description: 'How a small ESP32 desk display for Codex, Claude, Gemini, and Cursor grew into an encrypted Bluetooth bridge and a native macOS companion app.'
+description: 'How a small ESP32 desk display for Codex, Claude, Gemini, and Cursor grew into an encrypted Bluetooth bridge, a native macOS companion app, and desktop widgets.'
 date: 2026-08-04
 author: 'Nipun Theekshana'
 tags: ['case-study', 'esp32', 'swiftui', 'bluetooth']
@@ -291,6 +291,45 @@ area must work in a narrow width without a heavy native scrollbar. These sound
 like minor concerns until the main window closes and the panel becomes the part
 of AgentMeter I use most often.
 
+## Widgets, and letting the display go
+
+The next request surprised me: people wanted AgentMeter without the device.
+They liked the desktop companion as a usage monitor on its own and asked for
+two things — usage on the desktop itself, and a way to turn the Bluetooth side
+off completely.
+
+Widgets came first. The macOS build now ships two WidgetKit families. Focus
+follows one agent: a large number at the small size, and a usage ring with
+labelled progress bars for every remaining window from medium up. Dashboard
+covers all agents at once — compact rows, a ring-per-agent board, provider rows
+with history, and at the largest size a grid of agent cards beside a 24-hour
+trend drawn from the bridge's retained five-minute samples.
+
+<div class="article-screenshot-grid">
+  <figure>
+    <img src="/images/blog/agentmeter/macos-widget-dashboard.png" alt="AgentMeter Dashboard widget showing provider rows and a 30-day consumption strip" loading="lazy" decoding="async" />
+    <figcaption>Figure 11: The Dashboard widget keeps every agent's allowance one glance away.</figcaption>
+  </figure>
+  <figure>
+    <img src="/images/blog/agentmeter/macos-widget-focus.png" alt="AgentMeter Focus widget with a glowing usage ring and window bars" loading="lazy" decoding="async" />
+    <figcaption>Figure 12: Focus gives one agent a ring and a full set of window bars.</figcaption>
+  </figure>
+</div>
+
+The same honesty rules carried over. Reset times read the way people say them —
+"Resets in 2 hr 5 min", "Resets Mon 6:00 PM" — an unknown percentage renders as
+"Not reported" rather than a zero, and a passed reset says "Refresh pending"
+until fresh data arrives. The widget extension is fully sandboxed: it reads one
+bounded JSON snapshot from the shared App Group container and has no Bluetooth,
+network, or credential access at all.
+
+Standalone mode answered the second request. One switch in the app's new
+Settings section turns off device synchronization entirely: the bridge
+disconnects the display, stops all Bluetooth work, and rejects device commands
+until it is re-enabled, while collection, charts, the menu bar, and widgets
+keep working. The paired display simply shows its data as stale, which is the
+truth.
+
 ## Keeping a desk utility quiet
 
 Putting a number on a display sounds simple. Making the complete system behave
@@ -311,7 +350,7 @@ AgentMeter into an observability system.
 
 <img src="/images/blog/agentmeter/macos-diagnostics.png" alt="AgentMeter diagnostics page with bridge health, Bluetooth details, storage controls, and recent sanitized events" loading="lazy" decoding="async" />
 
-*Figure 11: Diagnostics expose enough context to debug the bridge while keeping provider data and credentials out.*
+*Figure 13: Diagnostics expose enough context to debug the bridge while keeping provider data and credentials out.*
 
 ## Building and testing it in layers
 
