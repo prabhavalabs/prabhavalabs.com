@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'motion/react';
 import { GlobeIcon, ArrowRight, Check, Loader2 } from 'lucide-react';
-import { GitHubMark, XMark } from './BrandIcons';
+import { DiscordMark, GitHubMark, XMark } from './BrandIcons';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+const DISCORD_INVITE = 'https://discord.gg/6wxwKjFkbv';
 
 export default function Footer() {
   const ref = useRef<HTMLDivElement>(null);
@@ -137,6 +138,28 @@ export default function Footer() {
         </motion.form>
 
         <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.25 }}
+          className="mx-auto mt-10 flex max-w-xl flex-col items-center gap-3"
+        >
+          <p className="text-xs uppercase tracking-[0.2em] text-white/45">Or join the conversation</p>
+          <a
+            href={DISCORD_INVITE}
+            target="_blank"
+            rel="noreferrer"
+            className="liquid-glass inline-flex items-center gap-3 rounded-full py-3 pl-5 pr-6 text-sm font-medium text-white transition-all hover:bg-white/5"
+          >
+            <DiscordMark size={18} className="text-[#8ea1ff]" />
+            Join the Discord community
+          </a>
+          <p className="max-w-md text-xs leading-relaxed text-white/60">
+            Updates land there first: PriceLens, Lanka Newspaper, Lanka Data Layer, AgentMeter, and
+            whatever comes next. Ask questions, report what breaks, shape what gets built.
+          </p>
+        </motion.div>
+
+        <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
@@ -144,6 +167,7 @@ export default function Footer() {
         >
           {[
             { icon: GitHubMark, href: 'https://github.com/prabhavalabs', label: 'GitHub' },
+            { icon: DiscordMark, href: DISCORD_INVITE, label: 'Discord community' },
             { icon: XMark, href: 'https://x.com/PrabhavaLabs', label: 'X (Twitter)' },
             { icon: GlobeIcon, href: 'https://prabhavalabs.com', label: 'Website' },
           ].map(({ icon: Icon, href, label }) => (

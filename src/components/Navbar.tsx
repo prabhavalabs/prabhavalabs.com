@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
-import { GitHubMark } from './BrandIcons';
+import { DiscordMark, GitHubMark } from './BrandIcons';
 
 const links = [
   { label: 'Projects', href: '/projects' },
@@ -73,6 +73,16 @@ export default function Navbar({ currentPath = '/' }: { currentPath?: string }) 
           >
             <GitHubMark size={16} />
             <span className="hidden sm:inline">GitHub</span>
+          </a>
+          <a
+            href="https://discord.gg/6wxwKjFkbv"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Join the Prabhava Labs Discord community"
+            className="liquid-glass flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-white/5 sm:px-4"
+          >
+            <DiscordMark size={16} />
+            <span className="hidden sm:inline">Discord</span>
           </a>
           <button
             type="button"
