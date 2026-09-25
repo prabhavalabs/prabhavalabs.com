@@ -106,6 +106,14 @@ function handleLocation(request) {
   );
 }
 
+// Google Search Console fetches /googleXXXX.html and expects a 200 there, but
+// the asset layer's auto-trailing-slash handling redirects *.html to the
+// extensionless path. Fetch that path internally so the exact URL answers.
+async function serveVerificationFile(request, env, url) {
+  const assetUrl = new URL(url.pathname.replace(/\.html$/, ''), url);
+  return env.ASSETS.fetch(new Request(assetUrl, request));
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -114,6 +122,9 @@ export default {
     }
     if (url.pathname === '/api/subscribe' && request.method === 'POST') {
       return handleSubscribe(request, env);
+    }
+    if (/^\/google[0-9a-f]+\.html$/.test(url.pathname)) {
+      return serveVerificationFile(request, env, url);
     }
     return env.ASSETS.fetch(request);
   },
